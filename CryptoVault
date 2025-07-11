@@ -1,0 +1,7 @@
+cd path/to/CryptoVault_BNBTestnet
+git init
+git add .
+git commit -m "Initial commit – CryptoVault contract + frontend"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/CryptoVault-BNBTestnet.git
+git push -u origin main
