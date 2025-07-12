@@ -2,32 +2,101 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CryptoVault BNBTestnet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoVault</title>
+
+  <!-- FONT FUTURIST -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #00ffff, #8a2be2);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px #8a2be2;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    button {
+      background-color: #8a2be2;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      margin: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 0 10px #00ffff;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00ffff;
+      color: #000;
+      box-shadow: 0 0 20px #00ffff;
+      transform: scale(1.05);
+    }
+
+    input, select {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin: 10px 0;
+      font-size: 16px;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h1>CryptoVault App</h1>
-  <button onclick="connect()">Connect Wallet</button>
-  <button onclick="deposit()">Deposit</button>
-  <button onclick="withdraw()">Withdraw</button>
+  <div class="container">
+    <h1>CryptoVault</h1>
+    <div class="card">
+      <button onclick="connectWallet()">Connect Wallet</button>
+      <br/>
+      <input type="number" id="amount" placeholder="Amount in BNB">
+      <br/>
+      <select id="duration">
+        <option value="86400">1 day</option>
+        <option value="604800">7 days</option>
+        <option value="2592000">30 days</option>
+      </select>
+      <br/>
+      <button onclick="deposit()">Deposit</button>
+      <button onclick="withdraw()">Withdraw</button>
+    </div>
+  </div>
 
-  <script>
-    async function connect() {
-      if (window.ethereum) {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        alert("Wallet connected");
-      } else {
-        alert("Install MetaMask");
-      }
-    }
-
-    async function deposit() {
-      alert("Deposit clicked (to be linked to smart contract)");
-    }
-
-    async function withdraw() {
-      alert("Withdraw clicked (to be linked to smart contract)");
-    }
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
