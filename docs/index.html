@@ -1,0 +1,51 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoVault</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #00ffff;
+    }
+    .container {
+      padding: 2rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 16px;
+      margin: 3rem auto;
+      width: 90%;
+      max-width: 600px;
+    }
+    button {
+      background: #7f00ff;
+      border: none;
+      color: white;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    h1 {
+      color: #00ffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CryptoVault</h1>
+    <p>Connect your wallet and deposit USDT on BNB Chain.</p>
+    <button onclick="connectWallet()">Connect Wallet</button>
+    <p id="walletAddress"></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
