@@ -1,113 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0ff" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" href="icon.png" />
-  <title>CryptoVault</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CryptoVault</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="icon.png" type="image/png" />
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+      }
+    </script>
+  </head>
 
-  <!-- Fonts + Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <body>
+    <div id="app">
+      <header class="header">
+        <h1 class="logo">CryptoVault</h1>
+        <button id="connectWallet" class="btn neon">Connect Wallet</button>
+      </header>
 
-  <!-- Style -->
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background-image: url('https://i.ibb.co/D9SY0vf/futuristic-female-robot-crypto.jpg'); /* imagine robot pe fundal */
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: #fff;
-    }
+      <main class="container">
+        <section class="card neon-bg">
+          <h2>Deposit USDT (BEP20)</h2>
+          <p>Choose a plan and duration:</p>
+          <select id="amountSelect">
+            <option value="500">Plan 1: 0–1999 USDT → 3.5%</option>
+            <option value="3000">Plan 2: 2000–5000 USDT → 5.5%</option>
+            <option value="7000">Plan 3: 5000–10000 USDT → 7.5%</option>
+          </select>
 
-    .overlay {
-      background-color: rgba(0, 0, 0, 0.75);
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      z-index: 0;
-    }
+          <select id="durationSelect">
+            <option value="2592000">1 Month</option>
+            <option value="7776000">3 Months</option>
+            <option value="12960000">5 Months</option>
+          </select>
 
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 2rem;
-      text-align: center;
-    }
+          <button id="depositBtn" class="btn neon">Deposit</button>
+        </section>
 
-    h1 {
-      color: #0ff;
-      font-size: 2rem;
-    }
+        <section class="card neon-bg">
+          <h2>Your Deposit</h2>
+          <p id="depositInfo">No deposit found.</p>
+          <button id="withdrawBtn" class="btn neon">Withdraw</button>
+        </section>
 
-    button {
-      background: linear-gradient(135deg, #0ff, #a0f);
-      border: none;
-      padding: 0.8rem 1.2rem;
-      color: #000;
-      font-weight: bold;
-      border-radius: 12px;
-      margin-top: 1rem;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
+        <section class="card neon-bg">
+          <h2>Referral System</h2>
+          <p id="referralLink">Your link: <span id="linkText"></span></p>
+          <p>Level 1 Earnings: <span id="ref1">0 USDT</span></p>
+          <p>Level 2 Earnings: <span id="ref2">0 USDT</span></p>
+        </section>
 
-    button:hover {
-      transform: scale(1.05);
-    }
+        <section class="card neon-bg" id="adminPanel" style="display:none;">
+          <h2>Admin Panel</h2>
+          <p>Total Deposits: <span id="totalDeposits">--</span></p>
+          <p>Total Referral Rewards: <span id="totalReferral">--</span></p>
+        </section>
+      </main>
 
-    input, select {
-      padding: 0.6rem;
-      margin: 0.5rem 0;
-      border-radius: 10px;
-      border: none;
-      width: 100%;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid #0ff;
-      border-radius: 16px;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="overlay"></div>
-  <div class="container">
-    <h1>CryptoVault 💎</h1>
-    <p>Earn interest on USDT deposits with our 3-tier plan.</p>
-
-    <button id="connectWalletBtn">Connect Wallet</button>
-    <p id="walletAddress"></p>
-
-    <div class="card">
-      <h3>Make a Deposit</h3>
-      <input type="number" id="amountInput" placeholder="Amount in USDT" />
-      <select id="planSelect">
-        <option value="1">Plan 1: 3.5% (0–1999 USDT)</option>
-        <option value="2">Plan 2: 5.5% (2000–5000 USDT)</option>
-        <option value="3">Plan 3: 7.5% (5000–10000 USDT)</option>
-      </select>
-      <button id="depositBtn">Deposit</button>
+      <footer class="footer">
+        <p>Commission 5% on withdrawals • Powered by BNB Chain</p>
+      </footer>
     </div>
 
-    <div class="card">
-      <h3>Referral Info</h3>
-      <p>Share your referral link:</p>
-      <input id="referralLink" readonly />
-    </div>
-  </div>
-
-  <!-- Script -->
-  <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@2.0.0-beta.17/dist/index.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
-  <script src="script.js"></script>
-</body>
+    <div class="bg-overlay"></div>
+    <script src="https://unpkg.com/@walletconnect/web3-provider@2.0.0-beta.20/dist/index.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>
