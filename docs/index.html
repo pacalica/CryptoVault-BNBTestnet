@@ -2,76 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#00ffff"/>
   <title>CryptoVault</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: linear-gradient(to right, #0ff, #a0f);
-      color: white;
-      background-image: url('background.jpg');
-      background-size: cover;
-      background-position: center;
-      backdrop-filter: brightness(0.6);
-    }
-    .container {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 2rem;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      margin-top: 5vh;
-      box-shadow: 0 0 20px #0ff;
-    }
-    h1 {
-      text-align: center;
-      font-size: 2rem;
-      color: #fff;
-    }
-    button {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1rem;
-      background: #0ff;
-      border: none;
-      color: black;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-    button:hover {
-      background: #a0f;
-      color: white;
-    }
-    input, select {
-      width: 100%;
-      padding: 0.7rem;
-      margin-top: 0.5rem;
-      border-radius: 10px;
-      border: none;
-    }
-    .wallet {
-      text-align: center;
-      margin-top: 1rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="icon.png" />
 </head>
 <body>
   <div class="container">
-    <h1>CryptoVault</h1>
+    <h1 class="title">CryptoVault</h1>
+    <p class="subtitle">Earn rewards with your USDT deposits</p>
 
-    <div class="wallet">
-      <p id="walletAddress">Not connected</p>
-      <button id="connectWallet">Connect Wallet</button>
+    <div class="wallet-connection">
+      <button id="connectBtn">Connect Wallet</button>
+      <p id="walletAddress"></p>
     </div>
 
-    <div id="depositSection" style="display:none;">
-      <h2>Make a Deposit</h2>
-      <input type="number" id="usdtAmount" placeholder="Amount in USDT (BEP20)" />
-      <select id="planSelect">
-        <option value="2592000">1 Month</option>
-        <option value="7776000">3 Months</option>
-        <option value="12960000">5
+    <div class="deposit-section">
+      <h2>Deposit USDT</h2>
+      <input type="number" id="depositAmount" placeholder="Amount in USDT" />
+      <button id="depositBtn">Deposit</button>
+    </div>
+
+    <div class="referral-section">
+      <h3>Referral</h3>
+      <p>Your referral link:</p>
+      <input type="text" id="referralLink" readonly />
+    </div>
+
+    <div class="footer">
+      <p>5% commission on user withdrawals · Weekly withdrawal · Referral commission: 2% (level 1), 1% (level 2)</p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/web3@1.10.0/dist/web3.min.js"></script>
+  <script src="https://unpkg.com/@walletconnect/web3-provider@2.0.0/dist/index.umd.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
