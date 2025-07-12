@@ -1,42 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #000000;
-  background-image: url('https://images.unsplash.com/photo-1648737962116-9267d15d5c42?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
-  background-size: cover;
-  background-position: center;
-  color: white;
-  animation: fadeIn 2s ease-in-out;
+  padding: 0;
+  font-family: 'Orbitron', sans-serif;
+  color: #ffffff;
+  background-color: #000000;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url("robot-futurist.jpg") no-repeat center center/cover;
+  z-index: -1;
+  filter: brightness(0.2) blur(2px);
+}
+
+/* Neon effect colors */
+.neon-cyan {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+}
+
+.neon-violet {
+  color: #cc00ff;
+  text-shadow: 0 0 10px #cc00ff, 0 0 20px #cc00ff;
+}
+
+.container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  z-index: 1;
+  position: relative;
 }
 
 button {
-  background: linear-gradient(45deg, #00ffff, #cc00ff);
+  background: linear-gradient(135deg, #00ffff, #cc00ff);
   border: none;
-  padding: 12px 24px;
-  color: black;
-  font-weight: bold;
-  border-radius: 8px;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 0 12px #00ffffaa;
-  transition: 0.3s ease;
+  margin-top: 1rem;
+  box-shadow: 0 0 10px #00ffff;
+  transition: transform 0.2s ease-in-out;
 }
 
 button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px #cc00ffaa;
+  box-shadow: 0 0 15px #cc00ff;
 }
 
 .card {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.5);
   border: 2px solid #00ffff;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 20px;
-  margin: 20px;
-  box-shadow: 0 0 15px #cc00ff88;
-  backdrop-filter: blur(10px);
+  margin-top: 20px;
+  box-shadow: 0 0 15px #00ffff;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 25px #cc00ff;
+  transform: translateY(-5px);
+}
+
+h1, h2, h3 {
+  text-align: center;
+  margin: 0.5em 0;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #00ffff;
+  background-color: #111;
+  color: #fff;
+  margin-top: 10px;
+}
+
+a {
+  color: #00ffff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-shadow: 0 0 5px #cc00ff;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 14px;
+  opacity: 0.6;
 }
