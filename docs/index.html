@@ -1,58 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CryptoVault</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #00ffff, #8a2be2);
-      color: white;
-      text-align: center;
-      padding: 2rem;
-    }
-    .container {
-      max-width: 400px;
-      margin: auto;
-      background: rgba(0,0,0,0.6);
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 0 20px cyan;
-      animation: fadeIn 1s ease-in;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: none;
-      font-size: 1rem;
-    }
-    button {
-      background: #00ffff;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CryptoVault</title>
+    <script src="https://unpkg.com/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+    <script src="https://unpkg.com/web3modal"></script>
+    <style>
+      body {
+        background: #000;
+        color: #fff;
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 50px;
+      }
+      button {
+        background: linear-gradient(45deg, cyan, violet);
+        border: none;
+        color: white;
+        padding: 15px 25px;
+        font-size: 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
     <h1>CryptoVault</h1>
     <button onclick="connectWallet()">Connect Wallet</button>
-    <input id="amount" placeholder="Amount in BNB" type="number" />
-    <input id="duration" placeholder="Duration in seconds" type="number" />
-    <button onclick="deposit()">Deposit</button>
-  </div>
+    <script>
+      let web3;
+      let provider;
+      let web3Modal;
 
-  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-  <script src="script.js"></script>
-</body>
+      async function connectWallet() {
+        const providerOptions = {
+          walletconnect: {
+            package: window.WalletConnectProvider.default,
+            options: {
+              rpc: {
+                56: "https://bsc-dataseed.binance.org/"
+              },
+              chainId: 56
+            }
+          }
+        };
+
+        web3Modal = new window.Web3Modal.default({
+          cacheProvider: false,
+          providerOptions
+        });
+
+        try {
+          provider = await web3Modal.connect();
+          web3 = new Web3(provider);
+          const accounts = await web3.eth.getAccounts();
+          alert("Connected: " + accounts[0]);
+        } catch (err) {
+          console.error("Connection failed", err);
+          alert("Connection failed.");
+        }
+      }
+    </script>
+  </body>
 </html>
