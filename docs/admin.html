@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - CryptoVault</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="admin-page">
+  <div class="sidebar">
+    <h2>CryptoVault</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="deposit.html">Open Deposit</a></li>
+      <li><a href="withdraw.html">Withdraw</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="team.html">My Team</a></li>
+      <li><a href="affiliate.html">Affiliate Link</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="security.html">Security</a></li>
+      <li><a href="admin.html" class="active">Admin</a></li>
+      <li><a href="index.html" onclick="logout()">Exit</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <h1>Admin Panel</h1>
+
+    <div class="admin-section">
+      <h2>Total Earnings</h2>
+      <p><strong>Total Deposits:</strong> <span id="totalDeposits">0</span> USDT</p>
+      <p><strong>Total Referral Bonuses:</strong> <span id="totalReferral">0</span> USDT</p>
+    </div>
+
+    <div class="admin-section">
+      <h2>Referral Structure</h2>
+      <div id="referralList">
+        <!-- Referral data populated here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
