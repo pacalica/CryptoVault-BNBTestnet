@@ -1,38 +1,64 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const userData = JSON.parse(localStorage.getItem("user"));
+  const email = localStorage.getItem("userEmail");
+  const username = localStorage.getItem("userName");
 
-  if (!userData) {
+  if (!email || !username) {
     window.location.href = "index.html";
     return;
   }
 
-  // Afișează numele utilizatorului
-  document.getElementById("user-name").textContent = userData.username;
+  // Valori implicite
+  let totalDeposited = 0;
+  let interestEarned = 0;
+  let referralBonus = 0;
+  let availableBalance = 0;
 
-  // Calculează totalul investit
-  let totalInvested = 0;
-  let estimatedInterest = 0;
+  // Preluare depozite
+  const deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+  const myDeposits = deposits.filter((d) => d.email === email);
 
-  const now = new Date();
+  // Calcul depozite și dobândă
+  myDeposits.forEach((d) => {
+    const amount = parseFloat(d.amount);
+    const plan = d.plan;
+    const duration = parseInt(d.duration);
+    const startDate = new Date(d.date);
+    const now = new Date();
+    const timePassed = Math.max((now - startDate) / (1000 * 60 * 60 * 24 * 30), 0); // luni trecute
 
-  userData.deposits.forEach(deposit => {
-    totalInvested += deposit.amount;
+    let rate = 0;
+    if (amount < 2000) rate = 3.5;
+    else if (amount <= 5000) rate = 5.5;
+    else rate = 7.5;
 
-    // Calculează dobânda estimată (simplificată)
-    const months = deposit.duration;
-    const rate = deposit.interest;
-    const interest = (deposit.amount * rate * months) / 100;
-    estimatedInterest += interest;
+    const earned = amount * (rate / 100) * Math.min(timePassed / duration, 1);
+
+    totalDeposited += amount;
+    interestEarned += earned;
   });
 
-  // Afișează sumele
-  document.getElementById("total-invested").textContent = totalInvested.toFixed(2) + " USDT";
-  document.getElementById("balance").textContent = userData.balance.toFixed(2) + " USDT";
-  document.getElementById("estimated-interest").textContent = estimatedInterest.toFixed(2) + " USDT";
+  // Preluare referal bonus
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const currentUser = users.find((u) => u.email === email);
+  referralBonus = currentUser?.referralBonus || 0;
 
-  // Buton logout
-  document.getElementById("logout-btn").addEventListener("click", () => {
-    localStorage.removeItem("user");
-    window.location.href = "index.html";
-  });
+  // Preluare retrageri
+  const withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+  const userWithdrawals = withdrawals.filter((w) => w.email === email && w.status === "successful");
+  const withdrawnAmount = userWithdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
+
+  // Sold disponibil = dobândă + bonus - retrageri efectuate
+  availableBalance = interestEarned + referralBonus - withdrawnAmount;
+
+  // Afișare în pagină
+  document.getElementById("totalDeposited").innerText = `${totalDeposited.toFixed(2)} USDT`;
+  document.getElementById("interestEarned").innerText = `${interestEarned.toFixed(2)} USDT`;
+  document.getElementById("referralBonus").innerText = `${referralBonus.toFixed(2)} USDT`;
+  document.getElementById("availableBalance").innerText = `${availableBalance.toFixed(2)} USDT`;
 });
+
+function logout() {
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userName");
+  window.location.href = "index.html";
+}
