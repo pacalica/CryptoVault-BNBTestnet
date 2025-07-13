@@ -2,33 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CryptoVault - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoVault - Dashboard</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.png" />
 </head>
-<body class="login-page">
-  <div class="login-container">
-    <h1>CryptoVault</h1>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email address" required />
-      <input type="text" id="username" placeholder="Username" required />
-      <button type="submit">Login</button>
-    </form>
+<body class="dashboard-body">
+  <div class="sidebar">
+    <div class="sidebar-title">CryptoVault</div>
+    <ul class="sidebar-menu">
+      <li><a href="#" class="menu-item">📊 Dashboard</a></li>
+      <li><a href="#" class="menu-item">🏦 Open deposit</a></li>
+      <li><a href="#" class="menu-item">💼 Deposits</a></li>
+      <li><a href="#" class="menu-item">💸 Withdraw</a></li>
+      <li><a href="#" class="menu-item">📜 History</a></li>
+      <li><a href="#" class="menu-item">👥 My team</a></li>
+      <li><a href="#" class="menu-item">🔗 Affiliate link</a></li>
+      <li><a href="#" class="menu-item">⚙️ Settings</a></li>
+      <li><a href="#" class="menu-item">🔒 Security</a></li>
+      <li><a href="#" class="menu-item">🚪 Exit</a></li>
+    </ul>
   </div>
-
-  <script>
-    // Auto-login
-    const user = localStorage.getItem("cv_user");
-    if (user) window.location.href = "app.html";
-
-    // On login submit
-    document.getElementById("loginForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const username = document.getElementById("username").value;
-      localStorage.setItem("cv_user", JSON.stringify({ email, username }));
-      window.location.href = "app.html";
-    });
-  </script>
+  <div class="main-content">
+    <h1>Welcome to CryptoVault</h1>
+    <p>Select an option from the menu to get started.</p>
+  </div>
 </body>
 </html>
