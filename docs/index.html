@@ -3,30 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CryptoVault - Dashboard</title>
+  <title>CryptoVault</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icon.png" />
+  <link rel="manifest" href="manifest.json" />
 </head>
-<body class="dashboard-body">
-  <div class="sidebar">
-    <div class="sidebar-title">CryptoVault</div>
-    <ul class="sidebar-menu">
-      <li><a href="#" class="menu-item">📊 Dashboard</a></li>
-      <li><a href="#" class="menu-item">🏦 Open deposit</a></li>
-      <li><a href="#" class="menu-item">💼 Deposits</a></li>
-      <li><a href="#" class="menu-item">💸 Withdraw</a></li>
-      <li><a href="#" class="menu-item">📜 History</a></li>
-      <li><a href="#" class="menu-item">👥 My team</a></li>
-      <li><a href="#" class="menu-item">🔗 Affiliate link</a></li>
-      <li><a href="#" class="menu-item">⚙️ Settings</a></li>
-      <li><a href="#" class="menu-item">🔒 Security</a></li>
-      <li><a href="#" class="menu-item">🚪 Exit</a></li>
-    </ul>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <ul>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#open-deposit">Open deposit</a></li>
+        <li><a href="#deposits">Deposits</a></li>
+        <li><a href="#withdraw">Withdraw</a></li>
+        <li><a href="#history">History</a></li>
+        <li><a href="#my-team">My team</a></li>
+        <li><a href="#affiliate">Affiliate link</a></li>
+        <li><a href="#settings">Settings</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#exit">Exit</a></li>
+      </ul>
+    </aside>
+    <main class="main">
+      <section id="dashboard">
+        <h1>Welcome to CryptoVault</h1>
+        <p>Select an option from the menu.</p>
+      </section>
+      <!-- Rest of content (open deposit, deposits, etc.) will go here -->
+    </main>
   </div>
-  <div class="main-content">
-    <h1>Welcome to CryptoVault</h1>
-    <p>Select an option from the menu to get started.</p>
-  </div>
+  
+  <script src="script.js"></script>
 </body>
 </html>
