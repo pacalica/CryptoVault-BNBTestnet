@@ -3,46 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CryptoVault Dashboard</title>
+  <title>CryptoVault - Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="dashboard-body">
-  <div class="sidebar">
-    <h2>CryptoVault</h2>
-    <ul>
-      <li><a href="dashboard.html" class="active">Dashboard</a></li>
-      <li><a href="deposit.html">Open Deposit</a></li>
-      <li><a href="withdraw.html">Withdraw</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="#">My Team</a></li>
-      <li><a href="#">Affiliate Link</a></li>
-      <li><a href="#">Settings</a></li>
-      <li><a href="#">Security</a></li>
-      <li><button id="logout-btn" class="logout-btn">Exit</button></li>
-    </ul>
-  </div>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>CryptoVault</h2>
+      <ul>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="deposit.html">Open Deposit</a></li>
+        <li><a href="withdraw.html">Withdraw</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="team.html">My Team</a></li>
+        <li><a href="affiliate.html">Affiliate Link</a></li>
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="security.html">Security</a></li>
+        <li><a href="#" onclick="logout()">Exit</a></li>
+      </ul>
+    </aside>
 
-  <div class="main-content">
-    <h1>Welcome, <span id="user-name">User</span>!</h1>
-
-    <div class="stats-grid">
-      <div class="card">
-        <h3>Total Invested</h3>
-        <p id="total-invested">0 USDT</p>
+    <main class="main-content">
+      <h2>Dashboard</h2>
+      <div class="summary-boxes">
+        <div class="box">
+          <h3>Total Deposited</h3>
+          <p id="totalDeposited">0 USDT</p>
+        </div>
+        <div class="box">
+          <h3>Interest Earned</h3>
+          <p id="interestEarned">0 USDT</p>
+        </div>
+        <div class="box">
+          <h3>Referral Bonus</h3>
+          <p id="referralBonus">0 USDT</p>
+        </div>
+        <div class="box">
+          <h3>Available Balance</h3>
+          <p id="availableBalance">0 USDT</p>
+        </div>
       </div>
-      <div class="card">
-        <h3>Balance</h3>
-        <p id="balance">0 USDT</p>
-      </div>
-      <div class="card">
-        <h3>Estimated Interest</h3>
-        <p id="estimated-interest">0 USDT</p>
-      </div>
-    </div>
-
-    <div class="info-box">
-      <p>Use the menu to make deposits, withdrawals or view your transaction history.</p>
-    </div>
+    </main>
   </div>
 
   <script src="dashboard.js"></script>
