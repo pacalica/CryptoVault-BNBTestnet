@@ -1,76 +1,47 @@
-// admin.js
+<!DOCTYPE html>
+<html lang="en">
 
-document.addEventListener("DOMContentLoaded", () => {
-  const withdrawalList = document.getElementById("withdrawalList");
-  const userBalanceInput = document.getElementById("userBalance");
-  const newBalanceInput = document.getElementById("newBalance");
-  const updateBalanceBtn = document.getElementById("updateBalance");
-  const updateMessage = document.getElementById("updateMessage");
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoVault | Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-  const balances = JSON.parse(localStorage.getItem("balances")) || {};
-  const withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+<body>
+  <div class="container">
+    <h1>Welcome to CryptoVault</h1>
+    <p id="user-info"></p>
+    <div class="menu">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="deposit.html">Open Deposit</a>
+      <a href="deposits.html">Deposits</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="history.html">History</a>
+      <a href="team.html">My Team</a>
+      <a href="affiliate.html">Affiliate Link</a>
+      <a href="settings.html">Settings</a>
+      <a href="security.html">Security</a>
+      <a href="#" onclick="logout()">Exit</a>
+    </div>
+  </div>
 
-  // Afișează cererile de retragere
-  function displayWithdrawals() {
-    withdrawalList.innerHTML = "";
-    withdrawals.forEach((w, index) => {
-      const item = document.createElement("div");
-      item.className = "mb-4 p-2 border rounded bg-gray-800";
-      item.innerHTML = `
-        <p><strong>User:</strong> ${w.user}</p>
-        <p><strong>Amount:</strong> ${w.amount} USDT</p>
-        <p><strong>Status:</strong> <span class="font-bold">${w.status}</span></p>
-        <button class="approve-btn bg-green-600 text-white px-2 py-1 rounded mr-2" data-index="${index}">Approve</button>
-        <button class="reject-btn bg-red-600 text-white px-2 py-1 rounded" data-index="${index}">Reject</button>
-      `;
-      withdrawalList.appendChild(item);
-    });
-  }
-
-  // Actualizează statusul cererii
-  function updateWithdrawalStatus(index, newStatus) {
-    if (withdrawals[index]) {
-      withdrawals[index].status = newStatus;
-      if (newStatus === "approved") {
-        const user = withdrawals[index].user;
-        const amount = parseFloat(withdrawals[index].amount);
-        if (balances[user]) {
-          balances[user] -= amount;
-        }
+  <script>
+    window.onload = function () {
+      const email = localStorage.getItem("userEmail");
+      const name = localStorage.getItem("userName");
+      if (!email || !name) {
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("user-info").innerText = `Logged in as: ${name} (${email})`;
       }
-      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-      localStorage.setItem("balances", JSON.stringify(balances));
-      displayWithdrawals();
-    }
-  }
+    };
 
-  // Adaugă evenimente pentru butoanele de aprobare/respingere
-  withdrawalList.addEventListener("click", (e) => {
-    const index = e.target.dataset.index;
-    if (e.target.classList.contains("approve-btn")) {
-      updateWithdrawalStatus(index, "approved");
-    } else if (e.target.classList.contains("reject-btn")) {
-      updateWithdrawalStatus(index, "rejected");
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
     }
-  });
+  </script>
+</body>
 
-  // Modifică manual soldul unui utilizator
-  updateBalanceBtn.addEventListener("click", () => {
-    const user = userBalanceInput.value.trim();
-    const newBalance = parseFloat(newBalanceInput.value);
-    if (!user || isNaN(newBalance)) {
-      updateMessage.textContent = "Please enter valid user and balance.";
-      updateMessage.classList.add("text-red-500");
-      return;
-    }
-    balances[user] = newBalance;
-    localStorage.setItem("balances", JSON.stringify(balances));
-    updateMessage.textContent = `Balance for ${user} updated to ${newBalance} USDT.`;
-    updateMessage.classList.remove("text-red-500");
-    updateMessage.classList.add("text-green-500");
-    userBalanceInput.value = "";
-    newBalanceInput.value = "";
-  });
-
-  displayWithdrawals();
-});
+</html>
