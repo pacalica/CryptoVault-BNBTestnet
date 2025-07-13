@@ -1,40 +1,55 @@
-document.getElementById('withdrawForm').addEventListener('submit', function (e) {
-  e.preventDefault();
+document.addEventListener('DOMContentLoaded', function () {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const deposits = JSON.parse(localStorage.getItem('deposits')) || [];
+  const withdrawals = JSON.parse(localStorage.getItem('withdrawals')) || [];
 
-  const amount = parseFloat(document.getElementById('withdrawAmount').value);
-  if (isNaN(amount) || amount <= 0) {
-    alert("Introdu o sumă validă.");
+  const withdrawForm = document.getElementById('withdrawForm');
+  const statusText = document.getElementById('withdrawStatus');
+
+  if (!user) {
+    window.location.href = "index.html";
+  }
+
+  // Calculează soldul total activ
+  const totalBalance = deposits
+    .filter(dep => dep.userEmail === user.email && dep.status === 'confirmed')
+    .reduce((acc, dep) => {
+      const profit = dep.amount * (dep.interest / 100);
+      return acc + dep.amount + profit;
+    }, 0);
+
+  // Verifică dacă există o retragere în așteptare
+  const pendingWithdrawals = withdrawals.filter(w => w.userEmail === user.email && w.status === 'pending');
+  if (pendingWithdrawals.length > 0) {
+    withdrawForm.style.display = 'none';
+    statusText.textContent = "You already have a pending withdrawal.";
     return;
   }
 
-  const withdrawals = JSON.parse(localStorage.getItem('withdrawals') || '[]');
-  const hasPending = withdrawals.some(w => w.status === 'pending');
-  if (hasPending) {
-    alert('Ai deja o cerere de retragere în așteptare.');
-    return;
-  }
+  withdrawForm.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-  const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-  const currentBalance = parseFloat(userData.balance || 0);
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    if (isNaN(amount) || amount <= 0) {
+      statusText.textContent = "Please enter a valid amount.";
+      return;
+    }
 
-  if (amount > currentBalance) {
-    alert('Fonduri insuficiente. Nu poți retrage mai mult decât ai în cont.');
-    return;
-  }
+    if (amount > totalBalance) {
+      statusText.textContent = "Insufficient balance for withdrawal.";
+      return;
+    }
 
-  // Scădem suma retrasă (doar dacă cererea va fi aprobată ulterior)
-  userData.balance = currentBalance - amount;
-  localStorage.setItem('userData', JSON.stringify(userData));
+    withdrawals.push({
+      userEmail: user.email,
+      amount,
+      status: 'pending',
+      timestamp: Date.now()
+    });
 
-  const newWithdrawal = {
-    amount: amount,
-    date: new Date().toLocaleString(),
-    status: 'pending',
-  };
-
-  withdrawals.push(newWithdrawal);
-  localStorage.setItem('withdrawals', JSON.stringify(withdrawals));
-  alert('Cererea de retragere a fost trimisă. Status: pending.');
-
-  document.getElementById('withdrawForm').reset();
+    localStorage.setItem('withdrawals', JSON.stringify(withdrawals));
+    statusText.textContent = "Withdrawal request submitted.";
+    withdrawForm.reset();
+    withdrawForm.style.display = 'none';
+  });
 });
