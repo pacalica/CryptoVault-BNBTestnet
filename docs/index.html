@@ -3,42 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CryptoVault</title>
+  <title>CryptoVault - Login</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" href="icon.png" />
 </head>
-<body>
-  <div class="login-container" id="login-page">
-    <h2>Login</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="text" id="username" placeholder="Username" />
-    <button onclick="login()">Login</button>
+<body class="login-page">
+  <div class="login-container">
+    <h1>Welcome to CryptoVault</h1>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="username" placeholder="Username" required />
+      <button type="submit">Login</button>
+    </form>
   </div>
 
-  <div id="dashboard-page" style="display: none;">
-    <aside class="sidebar">
-      <h2>CryptoVault</h2>
-      <ul>
-        <li onclick="navigate('dashboard')">Dashboard</li>
-        <li onclick="navigate('deposit')">Open deposit</li>
-        <li onclick="navigate('mydeposits')">Deposits</li>
-        <li onclick="navigate('withdraw')">Withdraw</li>
-        <li onclick="navigate('history')">History</li>
-        <li onclick="navigate('team')">My team</li>
-        <li onclick="navigate('affiliate')">Affiliate link</li>
-        <li onclick="navigate('settings')">Settings</li>
-        <li onclick="navigate('security')">Security</li>
-        <li onclick="logout()">Exit</li>
-      </ul>
-    </aside>
-    <main class="main-content" id="main-view">
-      <h1>Welcome to CryptoVault</h1>
-      <p>Choose a section from the left menu.</p>
-    </main>
-  </div>
-
-  <script src="login.js"></script>
-  <script src="dashboard.js"></script>
+  <script src="js/login.js"></script>
 </body>
 </html>
