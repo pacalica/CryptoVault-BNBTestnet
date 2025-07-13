@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Affiliate Link - CryptoVault</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2>CryptoVault</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="deposit.html">Open Deposit</a></li>
+      <li><a href="withdraw.html">Withdraw</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="team.html">My Team</a></li>
+      <li><a href="affiliate.html" class="active">Affiliate Link</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="index.html" onclick="logout()">Exit</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <h1>My Affiliate Link</h1>
+    <p>Invite friends and earn rewards:</p>
+
+    <div class="affiliate-box">
+      <input type="text" id="affiliateLink" readonly>
+      <button onclick="copyLink()">Copy</button>
+    </div>
+
+    <p style="margin-top: 1rem;">Earn:
+      <br>➡️ 2% from direct invites
+      <br>➡️ 1% from second-level invites</p>
+  </div>
+
+  <script>
+    // Logout function
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = "index.html";
+    }
+
+    // Generate affiliate link based on user wallet/email
+    window.onload = function () {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user || !user.email) {
+        alert("Please login first");
+        window.location.href = "index.html";
+        return;
+      }
+
+      const baseUrl = window.location.origin + "/docs/index.html?ref=";
+      const refId = encodeURIComponent(user.email); // or use wallet if available
+      document.getElementById("affiliateLink").value = baseUrl + refId;
+    };
+
+    function copyLink() {
+      const input = document.getElementById("affiliateLink");
+      input.select();
+      input.setSelectionRange(0, 99999); // mobile
+      document.execCommand("copy");
+      alert("Link copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
