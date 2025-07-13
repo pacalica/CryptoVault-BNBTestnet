@@ -6,48 +6,50 @@
   <title>CryptoVault - Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="wrapper">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h2>CryptoVault</h2>
-      <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="deposit.html">Open Deposit</a></li>
-        <li><a href="#">Deposits</a></li>
-        <li><a href="#">Withdraw</a></li>
-        <li><a href="#">History</a></li>
-        <li><a href="#">My Team</a></li>
-        <li><a href="#">Affiliate Link</a></li>
-        <li><a href="#">Settings</a></li>
-        <li><a href="#">Security</a></li>
-        <li><a href="index.html" onclick="logout()">Exit</a></li>
-      </ul>
-    </div>
+<body class="dashboard-body">
 
-    <!-- Main content -->
-    <div class="main-content">
-      <h1>Welcome, <span id="userName"></span>!</h1>
+  <div class="sidebar">
+    <h2>CryptoVault</h2>
+    <ul>
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="deposit.html">Open Deposit</a></li>
+      <li><a href="deposits.html">Deposits</a></li>
+      <li><a href="withdraw.html">Withdraw</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="team.html">My Team</a></li>
+      <li><a href="referral.html">Affiliate Link</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="security.html">Security</a></li>
+      <li><a href="index.html" onclick="logout()">Exit</a></li>
+    </ul>
+  </div>
 
-      <div class="dashboard-summary">
-        <div class="stats-container">
-          <div class="stat-box">
-            <h3>Total Deposited</h3>
-            <p id="totalDeposited">0 USDT</p>
-          </div>
-          <div class="stat-box">
-            <h3>Expected Interest</h3>
-            <p id="expectedInterest">0 USDT</p>
-          </div>
-          <div class="stat-box">
-            <h3>Referral Bonus</h3>
-            <p id="referralBonus">0 USDT</p>
-          </div>
-        </div>
+  <div class="main-content">
+    <h1>Dashboard</h1>
+    <p>Welcome, <strong><span id="userName"></span></strong></p>
+
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>Total Deposited</h3>
+        <p><span id="totalDeposited">0 USDT</span></p>
+      </div>
+      <div class="stat-card">
+        <h3>Expected Interest</h3>
+        <p><span id="expectedInterest">0 USDT</span></p>
+      </div>
+      <div class="stat-card">
+        <h3>Referral Bonus</h3>
+        <p><span id="referralBonus">0 USDT</span></p>
       </div>
     </div>
   </div>
 
   <script src="dashboard.js"></script>
+  <script>
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    }
+  </script>
 </body>
 </html>
