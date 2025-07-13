@@ -1,73 +1,250 @@
+/* === Global styles === */
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
   color: #fff;
   min-height: 100vh;
   background-attachment: fixed;
-  background-size: cover;
-  padding: 20px;
 }
 
-.container {
-  max-width: 500px;
-  margin: auto;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+a {
+  color: #00ffff;
+  text-decoration: none;
 }
 
-h1, h2 {
-  text-align: center;
+h1, h2, h3 {
   color: #00ffff;
 }
 
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
+/* === Login page === */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-input {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+.login-box {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00ffffaa;
+  width: 90%;
+  max-width: 400px;
+}
+
+.login-box h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: #fff;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: #00ffff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background-color: #00cccc;
+}
+
+/* === Sidebar Menu === */
+.dashboard-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background: #121212;
+  min-height: 100vh;
+  padding: 20px;
+  box-shadow: 2px 0 10px #00ffff33;
+}
+
+.sidebar h2 {
+  color: #00ffff;
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+.sidebar li {
+  margin: 15px 0;
+}
+
+.sidebar a {
+  color: #fff;
+  display: block;
+  padding: 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #00ffff33;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+/* === Dashboard boxes === */
+.box {
+  background: #1c1c1c;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px #00ffff44;
+}
+
+/* === Deposit Page === */
+.deposit-address {
+  background: #1e1e1e;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  word-wrap: break-word;
+}
+
+.qr-code {
+  display: block;
+  margin: 0 auto;
+  max-width: 200px;
+  margin-bottom: 20px;
 }
 
 button {
-  background: #00ffff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #00ffff;
   color: #000;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s ease;
+  margin-top: 10px;
 }
 
 button:hover {
-  background: #00b7b7;
+  background-color: #00cccc;
 }
 
-.status-pending {
-  color: orange;
-  font-weight: bold;
-}
-
-.status-successful {
-  color: limegreen;
-  font-weight: bold;
-}
-
-.status-rejected {
-  color: red;
-  font-weight: bold;
-}
-
-.withdrawal-entry {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 10px;
-  margin-bottom: 10px;
+/* === Withdrawal Page === */
+.withdraw-form {
+  background: #1c1c1c;
+  padding: 25px;
   border-radius: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px #00ffff44;
+}
+
+.withdraw-form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 15px;
+  background: #1e1e1e;
+  color: #fff;
+}
+
+/* === History Page === */
+.history-entry {
+  background: #1a1a1a;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border-left: 5px solid #00ffff;
+}
+
+.history-entry .status {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status.pending {
+  color: orange;
+}
+
+.status.successful {
+  color: limegreen;
+}
+
+.status.rejected {
+  color: crimson;
+}
+
+/* === Admin Panel === */
+.admin-page {
+  background-color: #0f0f0f;
+  padding: 30px;
+}
+
+.admin-container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.admin-card {
+  background: #1f1f1f;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 4px solid #00ffff;
+  box-shadow: 0 0 10px #00ffff44;
+}
+
+.admin-card button {
+  margin: 5px;
+  padding: 10px 15px;
+  background-color: #00ffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #000;
+}
+
+.admin-card button:hover {
+  background-color: #00cccc;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .main-content {
+    padding: 15px;
+  }
 }
