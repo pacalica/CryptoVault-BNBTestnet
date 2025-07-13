@@ -1,14 +1,53 @@
-<!-- În interiorul <body> din dashboard.html -->
-<section class="dashboard-summary">
-  <h2>Account Overview</h2>
-  <div class="stats-container">
-    <div class="stat-box">
-      <h3>Total Invested</h3>
-      <p id="totalInvested">$0.00</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CryptoVault - Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>CryptoVault</h2>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="deposit.html">Open Deposit</a></li>
+        <li><a href="#">Deposits</a></li>
+        <li><a href="#">Withdraw</a></li>
+        <li><a href="#">History</a></li>
+        <li><a href="#">My Team</a></li>
+        <li><a href="#">Affiliate Link</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="index.html" onclick="logout()">Exit</a></li>
+      </ul>
     </div>
-    <div class="stat-box">
-      <h3>Total Earned</h3>
-      <p id="totalEarned">$0.00</p>
+
+    <!-- Main content -->
+    <div class="main-content">
+      <h1>Welcome, <span id="userName"></span>!</h1>
+
+      <div class="dashboard-summary">
+        <div class="stats-container">
+          <div class="stat-box">
+            <h3>Total Deposited</h3>
+            <p id="totalDeposited">0 USDT</p>
+          </div>
+          <div class="stat-box">
+            <h3>Expected Interest</h3>
+            <p id="expectedInterest">0 USDT</p>
+          </div>
+          <div class="stat-box">
+            <h3>Referral Bonus</h3>
+            <p id="referralBonus">0 USDT</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
