@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel – Withdrawal Requests</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-page">
+  <div class="admin-container">
+    <h1>Admin Panel</h1>
+    <div id="requests-container"></div>
+  </div>
+
+  <script>
+    const requestsContainer = document.getElementById("requests-container");
+    let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+    function renderRequests() {
+      requestsContainer.innerHTML = "";
+      if (withdrawals.length === 0) {
+        requestsContainer.innerHTML = "<p>No withdrawal requests found.</p>";
+        return;
+      }
+
+      withdrawals.forEach((req, index) => {
+        const card = document.createElement("div");
+        card.className = "admin-card";
+
+        const date = new Date(req.timestamp).toLocaleString();
+        card.innerHTML = `
+          <p><strong>User:</strong> ${req.email}</p>
+          <p><strong>Amount:</strong> ${req.amount} USDT</p>
+          <p><strong>Status:</strong> <span class="status ${req.status}">${req.status}</span></p>
+          <p><strong>Requested At:</strong> ${date}</p>
+          ${req.status === "pending" ? `
+            <button onclick="updateStatus(${index}, 'approved')">Approve</button>
+            <button onclick="updateStatus(${index}, 'rejected')">Reject</button>
+          ` : `<p><em>Already processed.</em></p>`}
+        `;
+
+        requestsContainer.appendChild(card);
+      });
+    }
+
+    function updateStatus(index, newStatus) {
+      withdrawals[index].status = newStatus === "approved" ? "successful" : "rejected";
+      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+      renderRequests();
+    }
+
+    renderRequests();
+  </script>
+</body>
+</html>
