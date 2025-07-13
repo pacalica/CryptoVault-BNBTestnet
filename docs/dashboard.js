@@ -1,31 +1,24 @@
-// Verificare autologin
-window.addEventListener("DOMContentLoaded", () => {
-  const user = localStorage.getItem("user");
-  const email = localStorage.getItem("email");
+// Verifică dacă utilizatorul este logat
+window.onload = function () {
+  const email = localStorage.getItem("userEmail");
+  const username = localStorage.getItem("userName");
 
-  if (!user || !email) {
-    // Nu e logat → redirecționează la login
-    window.location.href = "index.html";
-    return;
+  if (!email || !username) {
+    window.location.href = "index.html"; // redirect la login
+  } else {
+    document.getElementById("user-name").textContent = username;
+    document.getElementById("user-email").textContent = email;
   }
-
-  // Afișează numele și emailul utilizatorului
-  document.getElementById("displayName").textContent = user;
-  document.getElementById("displayEmail").textContent = email;
-});
+};
 
 // Logout
-function handleLogout() {
-  localStorage.removeItem("user");
-  localStorage.removeItem("email");
+function logout() {
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userName");
   window.location.href = "index.html";
 }
 
-// Navigare în meniu lateral (opțional activare vizuală)
-const navItems = document.querySelectorAll(".sidebar a");
-navItems.forEach(item => {
-  item.addEventListener("click", () => {
-    navItems.forEach(i => i.classList.remove("active"));
-    item.classList.add("active");
-  });
-});
+// Buton "Open Deposit"
+function openDeposit() {
+  window.location.href = "deposit.html";
+}
