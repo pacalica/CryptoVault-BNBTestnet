@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deposit | CryptoVault</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="main-bg">
+  <div class="container">
+    <h2 class="title">Make a Deposit</h2>
+
+    <div class="card">
+      <p class="label">Send USDT (BEP20) to the address below:</p>
+      <p class="wallet-address">0x124377FCe14439248a4959ce528314aA3A897321</p>
+
+      <div class="qr-wrapper">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=0x124377FCe14439248a4959ce528314aA3A897321"
+          alt="QR Code"
+          class="qr-code"
+        />
+      </div>
+
+      <p class="info-text">
+        After sending the deposit, click the button below to confirm.
+      </p>
+      <button onclick="confirmDeposit()" class="btn-primary">I've sent deposit</button>
+
+      <p class="note">
+        Note: USDT must be sent via the BEP20 network. Minimum deposit: 10 USDT.
+      </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button onclick="goBack()" class="btn-secondary">Back to Dashboard</button>
+    </div>
+  </div>
+
+  <script>
+    function confirmDeposit() {
+      alert("Thank you! Your deposit will be confirmed after network validation.");
+      window.location.href = "dashboard.html";
+    }
+
+    function goBack() {
+      window.location.href = "dashboard.html";
+    }
+  </script>
+</body>
+</html>
