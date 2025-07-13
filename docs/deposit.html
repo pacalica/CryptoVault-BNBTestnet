@@ -1,53 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Deposit - CryptoVault</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body class="neon-background">
-  <div class="sidebar">
-    <h2>CryptoVault</h2>
-    <ul>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li class="active"><a href="deposit.html">Open Deposit</a></li>
-      <li><a href="withdraw.html">Withdraw</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="team.html">My Team</a></li>
-      <li><a href="referral.html">Affiliate Link</a></li>
-      <li><a href="settings.html">Settings</a></li>
-      <li><a href="security.html">Security</a></li>
-      <li><a href="index.html">Exit</a></li>
-    </ul>
-  </div>
+<!-- FORMULAR -->
+<input type="number" id="amount" placeholder="Enter USDT amount" />
 
-  <div class="main-content">
-    <h1>Open a Deposit</h1>
+<select id="duration">
+  <option value="1">1 lună</option>
+  <option value="3">3 luni</option>
+  <option value="5">5 luni</option>
+</select>
 
-    <div class="card">
-      <p><strong>Deposit address (BEP20 USDT):</strong></p>
-      <p class="address">0x124377FCe14439248a4959ce528314aA3A897321</p>
+<div id="planInfo" class="text-xs text-gray-300 mt-2"></div>
 
-      <div class="qr-section">
-        <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=0x124377FCe14439248a4959ce528314aA3A897321" alt="Deposit QR" />
-      </div>
-
-      <div class="plans">
-        <h3>Investment Plans</h3>
-        <ul>
-          <li>0 – 1999 USDT → 3.5% interest</li>
-          <li>2000 – 5000 USDT → 5.5% interest</li>
-          <li>5000 – 10000 USDT → 7.5% interest</li>
-        </ul>
-        <p><em>Withdrawals: 1/week based on plan duration (1, 3 or 5 months)</em></p>
-        <p><em>Fee: 5% applies only on withdrawals</em></p>
-      </div>
-
-      <button id="confirm-deposit" class="btn-primary">I've sent deposit</button>
-    </div>
-  </div>
-
-  <script src="deposit.js"></script>
-</body>
-</html>
+<div class="text-sm mt-4">
+  Dobândă estimată: <span id="estimatedInterest">0</span> USDT<br />
+  Total return: <span id="totalReturn">0</span> USDT
+</div>
