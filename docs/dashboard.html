@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoVault Dashboard</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="icon.png" type="image/png" />
+</head>
+<body class="dashboard-bg">
+
+  <div class="container">
+    <aside class="sidebar">
+      <h2>CryptoVault</h2>
+      <nav>
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Open Deposit</a>
+        <a href="#">Deposits</a>
+        <a href="#">Withdraw</a>
+        <a href="#">History</a>
+        <a href="#">My Team</a>
+        <a href="#">Affiliate Link</a>
+        <a href="#">Settings</a>
+        <a href="#" onclick="handleLogout()">Exit</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="user-panel">
+        <h1>Welcome back, <span id="displayName"></span> 👋</h1>
+        <p>Email: <span id="displayEmail"></span></p>
+      </section>
+
+      <section class="content-panel">
+        <h2>Your Dashboard</h2>
+        <p>Select an option from the left menu to get started.</p>
+      </section>
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
