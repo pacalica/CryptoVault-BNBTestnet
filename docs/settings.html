@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings - CryptoVault</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2>CryptoVault</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="deposit.html">Open Deposit</a></li>
+      <li><a href="withdraw.html">Withdraw</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="team.html">My Team</a></li>
+      <li><a href="settings.html" class="active">Settings</a></li>
+      <li><a href="index.html" onclick="logout()">Exit</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <h1>Settings</h1>
+    <p>This section will allow you to update your profile and app preferences.</p>
+    <p>Coming soon...</p>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
