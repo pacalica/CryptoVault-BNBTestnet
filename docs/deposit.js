@@ -1,57 +1,43 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const depositForm = document.getElementById('depositForm');
-  const depositAddress = document.getElementById('depositAddress');
-  const qrCode = document.getElementById('qrCode');
-  const statusText = document.getElementById('statusText');
+document.addEventListener("DOMContentLoaded", () => {
+  const email = localStorage.getItem("userEmail");
+  const username = localStorage.getItem("userName");
 
-  const user = JSON.parse(localStorage.getItem('user')) || null;
-  const deposits = JSON.parse(localStorage.getItem('deposits')) || [];
-
-  if (!user) {
+  if (!email || !username) {
     window.location.href = "index.html";
+    return;
   }
 
-  // Adresa fixă de depunere
-  const depositAddr = "0x124377FCe14439248a4959ce528314aA3A897321";
-  depositAddress.textContent = depositAddr;
+  const amountInput = document.getElementById("amount");
+  const durationSelect = document.getElementById("duration");
+  const estimatedInterest = document.getElementById("estimatedInterest");
+  const totalReturn = document.getElementById("totalReturn");
+  const planInfo = document.getElementById("planInfo");
 
-  new QRCode(qrCode, {
-    text: depositAddr,
-    width: 150,
-    height: 150
-  });
+  function updateEstimate() {
+    const amount = parseFloat(amountInput.value) || 0;
+    const duration = parseInt(durationSelect.value);
 
-  depositForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const amount = parseFloat(document.getElementById('amount').value);
-    const duration = document.getElementById('duration').value;
-
-    if (isNaN(amount) || amount <= 0) {
-      statusText.textContent = "Please enter a valid amount.";
-      return;
-    }
-
-    let interest = 0;
+    let rate = 0;
     if (amount < 2000) {
-      interest = 3.5;
+      rate = 3.5;
+      planInfo.innerText = "Plan 1: 3.5% / lună (0–1999 USDT)";
     } else if (amount <= 5000) {
-      interest = 5.5;
-    } else if (amount <= 10000) {
-      interest = 7.5;
+      rate = 5.5;
+      planInfo.innerText = "Plan 2: 5.5% / lună (2000–5000 USDT)";
+    } else {
+      rate = 7.5;
+      planInfo.innerText = "Plan 3: 7.5% / lună (5001–10000 USDT)";
     }
 
-    deposits.push({
-      userEmail: user.email,
-      amount,
-      duration,
-      interest,
-      timestamp: Date.now(),
-      status: "pending"
-    });
+    const interest = (amount * rate * duration) / 100;
+    const total = amount + interest;
 
-    localStorage.setItem('deposits', JSON.stringify(deposits));
-    statusText.textContent = "Deposit submitted. Waiting for confirmation.";
-    depositForm.reset();
-  });
+    estimatedInterest.innerText = interest.toFixed(2);
+    totalReturn.innerText = total.toFixed(2);
+  }
+
+  amountInput.addEventListener("input", updateEstimate);
+  durationSelect.addEventListener("change", updateEstimate);
+
+  updateEstimate(); // Inițial
 });
