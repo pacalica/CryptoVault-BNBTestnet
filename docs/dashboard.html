@@ -1,28 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>CryptoVault Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body class="dashboard-bg">
-  <aside class="sidebar">
-    <h2>CryptoVault</h2>
-    <ul>
-      <li>Dashboard</li>
-      <li>Open Deposit</li>
-      <li>Withdraw</li>
-      <li>My Team</li>
-      <li>Affiliate Link</li>
-      <li onclick="handleLogout()">Exit</li>
-    </ul>
-  </aside>
-
-  <main class="main-panel">
-    <h1>Welcome, <span id="displayName"></span></h1>
-    <p>Email: <span id="displayEmail"></span></p>
-  </main>
-
-  <script src="dashboard.js"></script>
-</body>
-</html>
+<!-- În interiorul <body> din dashboard.html -->
+<section class="dashboard-summary">
+  <h2>Account Overview</h2>
+  <div class="stats-container">
+    <div class="stat-box">
+      <h3>Total Invested</h3>
+      <p id="totalInvested">$0.00</p>
+    </div>
+    <div class="stat-box">
+      <h3>Total Earned</h3>
+      <p id="totalEarned">$0.00</p>
+    </div>
+  </div>
+</section>
