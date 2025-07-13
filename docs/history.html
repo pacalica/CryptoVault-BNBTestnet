@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Istoric Retrageri - CryptoVault</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>History - CryptoVault</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Istoric Retrageri</h1>
-    <div id="withdrawalHistory"></div>
+  <div class="sidebar">
+    <h2>CryptoVault</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="deposit.html">Open Deposit</a></li>
+      <li><a href="withdraw.html">Withdraw</a></li>
+      <li><a href="history.html" class="active">History</a></li>
+      <li><a href="team.html">My Team</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="index.html" onclick="logout()">Exit</a></li>
+    </ul>
   </div>
 
+  <div class="main">
+    <h1>Transaction History</h1>
+    <div id="historyList"></div>
+  </div>
+
+  <script src="history.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const historyContainer = document.getElementById("withdrawalHistory");
-      const user = JSON.parse(localStorage.getItem("user"));
-      const allRequests = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-      const userRequests = allRequests.filter(req => req.email === user.email);
-
-      if (userRequests.length === 0) {
-        historyContainer.innerHTML = "<p>Nu există cereri de retragere.</p>";
-        return;
-      }
-
-      userRequests.reverse().forEach(req => {
-        const div = document.createElement("div");
-        div.classList.add("withdrawal-entry");
-        div.innerHTML = `
-          <p><strong>Suma:</strong> ${req.amount} USDT</p>
-          <p><strong>Data:</strong> ${new Date(req.timestamp).toLocaleString()}</p>
-          <p><strong>Status:</strong> 
-            <span class="status-${req.status}">
-              ${req.status.charAt(0).toUpperCase() + req.status.slice(1)}
-            </span>
-          </p>
-        `;
-        historyContainer.appendChild(div);
-      });
-    });
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>
