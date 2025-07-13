@@ -38,8 +38,22 @@
         <!-- Referral data populated here -->
       </div>
     </div>
+
+    <div class="admin-section">
+      <h2>Manual Balance Adjustment</h2>
+      <input type="email" id="targetEmail" placeholder="User Email" />
+      <input type="number" id="newBalance" placeholder="New Balance (USDT)" />
+      <button onclick="updateBalance()">Update Balance</button>
+    </div>
+
+    <div class="admin-section">
+      <h2>Withdrawal Requests</h2>
+      <div id="withdrawRequests">
+        <!-- Requests populated dynamically -->
+      </div>
+    </div>
   </div>
 
-  <script src="js/admin.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>
