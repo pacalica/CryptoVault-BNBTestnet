@@ -1,163 +1,132 @@
-/* General Reset */
-* {
+/* Global */
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-/* Font */
-body {
-  font-family: 'Segoe UI', sans-serif;
-  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url('robot2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
   overflow-x: hidden;
 }
 
-/* === LOGIN PAGE === */
-.login-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: linear-gradient(to right, #0ff, #8f00ff);
-  animation: pulseBG 10s infinite alternate;
+/* Overlay for better readability */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 0;
 }
 
-@keyframes pulseBG {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(45deg);
-  }
-}
-
-.login-box {
-  background-color: rgba(0, 0, 0, 0.85);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 30px cyan;
-  width: 320px;
-}
-
-.login-box h2 {
-  text-align: center;
-  margin-bottom: 1rem;
-  color: #0ff;
-}
-
-.login-box input {
-  width: 100%;
-  padding: 0.7rem;
-  margin-bottom: 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: #222;
-  color: white;
-}
-
-.login-box button {
-  width: 100%;
-  padding: 0.7rem;
-  background-color: #8f00ff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-.login-box button:hover {
-  background-color: #aa00ff;
-}
-
-/* === DASHBOARD === */
-.dashboard {
+/* Layout */
+.container {
   display: flex;
   height: 100vh;
-  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 /* Sidebar */
 .sidebar {
-  width: 220px;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: white;
-  padding: 1rem;
+  width: 240px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #444;
 }
 
 .sidebar h2 {
   color: #0ff;
-  margin-bottom: 1rem;
   text-align: center;
+  margin-bottom: 30px;
+  font-weight: bold;
 }
 
-.sidebar button {
-  background: none;
-  border: none;
-  color: white;
-  margin: 0.5rem 0;
-  padding: 0.6rem;
-  text-align: left;
-  border-radius: 8px;
-  transition: background 0.3s;
-  cursor: pointer;
-}
-
-.sidebar button:hover {
-  background-color: #0ff;
-  color: #000;
-}
-
-/* Main Content */
-.main-content {
-  flex: 1;
-  background-image: url("robot2.jpg");
-  background-size: cover;
-  background-position: center;
-  padding: 2rem;
-  overflow-y: auto;
-}
-
-/* Card Styling */
-.card {
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 0 15px violet;
-  margin-bottom: 1.5rem;
-}
-
-/* QR Code Box */
-.qr-box {
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 0 12px cyan;
-}
-
-.qr-box img {
-  margin: 1rem 0;
-  width: 200px;
-  height: 200px;
-}
-
-/* Headings and text */
-h1, h2, h3 {
-  color: #fff;
-  margin-bottom: 1rem;
-}
-
-p {
+.sidebar a {
+  padding: 12px 20px;
   color: #ccc;
+  text-decoration: none;
+  margin-bottom: 10px;
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .dashboard {
+.sidebar a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #0ff;
+  border-left: 3px solid #0ff;
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.main h1 {
+  color: #fff;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+button {
+  background: #0ff;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #00e6e6;
+}
+
+/* Inputs */
+input[type="text"], input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Login Page */
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #0ff;
+  position: relative;
+  z-index: 1;
+}
+
+.login-container h2 {
+  text-align: center;
+  color: #0ff;
+  margin-bottom: 30px;
+}
+
+.login-container button {
+  width: 100%;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .container {
     flex-direction: column;
   }
 
@@ -165,16 +134,16 @@ p {
     width: 100%;
     flex-direction: row;
     overflow-x: auto;
-    border-right: none;
-    border-bottom: 1px solid #444;
+    padding: 10px;
   }
 
-  .sidebar button {
+  .sidebar a {
     flex: 1;
     text-align: center;
+    padding: 10px;
   }
 
-  .main-content {
-    padding: 1rem;
+  .main {
+    padding: 20px;
   }
 }
