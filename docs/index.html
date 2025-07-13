@@ -1,73 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoVault</title>
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="icon.png" type="image/png" />
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
-      }
-    </script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CryptoVault - Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <h1>CryptoVault</h1>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email address" required />
+      <input type="text" id="username" placeholder="Username" required />
+      <button type="submit">Login</button>
+    </form>
+  </div>
 
-  <body>
-    <div id="app">
-      <header class="header">
-        <h1 class="logo">CryptoVault</h1>
-        <button id="connectWallet" class="btn neon">Connect Wallet</button>
-      </header>
+  <script>
+    // Auto-login
+    const user = localStorage.getItem("cv_user");
+    if (user) window.location.href = "app.html";
 
-      <main class="container">
-        <section class="card neon-bg">
-          <h2>Deposit USDT (BEP20)</h2>
-          <p>Choose a plan and duration:</p>
-          <select id="amountSelect">
-            <option value="500">Plan 1: 0–1999 USDT → 3.5%</option>
-            <option value="3000">Plan 2: 2000–5000 USDT → 5.5%</option>
-            <option value="7000">Plan 3: 5000–10000 USDT → 7.5%</option>
-          </select>
-
-          <select id="durationSelect">
-            <option value="2592000">1 Month</option>
-            <option value="7776000">3 Months</option>
-            <option value="12960000">5 Months</option>
-          </select>
-
-          <button id="depositBtn" class="btn neon">Deposit</button>
-        </section>
-
-        <section class="card neon-bg">
-          <h2>Your Deposit</h2>
-          <p id="depositInfo">No deposit found.</p>
-          <button id="withdrawBtn" class="btn neon">Withdraw</button>
-        </section>
-
-        <section class="card neon-bg">
-          <h2>Referral System</h2>
-          <p id="referralLink">Your link: <span id="linkText"></span></p>
-          <p>Level 1 Earnings: <span id="ref1">0 USDT</span></p>
-          <p>Level 2 Earnings: <span id="ref2">0 USDT</span></p>
-        </section>
-
-        <section class="card neon-bg" id="adminPanel" style="display:none;">
-          <h2>Admin Panel</h2>
-          <p>Total Deposits: <span id="totalDeposits">--</span></p>
-          <p>Total Referral Rewards: <span id="totalReferral">--</span></p>
-        </section>
-      </main>
-
-      <footer class="footer">
-        <p>Commission 5% on withdrawals • Powered by BNB Chain</p>
-      </footer>
-    </div>
-
-    <div class="bg-overlay"></div>
-    <script src="https://unpkg.com/@walletconnect/web3-provider@2.0.0-beta.20/dist/index.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-    <script src="script.js"></script>
-  </body>
+    // On login submit
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const username = document.getElementById("username").value;
+      localStorage.setItem("cv_user", JSON.stringify({ email, username }));
+      window.location.href = "app.html";
+    });
+  </script>
+</body>
 </html>
