@@ -1,58 +1,105 @@
-body.login-page {
+/* style.css - Neon UI vibrant theme + sidebar */
+
+/* Reset + base font */
+body, html {
   margin: 0;
   padding: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
+  color: #ffffff;
   height: 100vh;
-  background: radial-gradient(circle, #0ff 0%, #8000ff 100%);
-  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+/* Sidebar layout */
+.container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: pulseBg 10s infinite alternate;
+  height: 100vh;
+  width: 100vw;
 }
 
-@keyframes pulseBg {
-  0% { filter: brightness(1); }
-  100% { filter: brightness(1.2); }
+.sidebar {
+  width: 250px;
+  background: rgba(0, 0, 0, 0.85);
+  border-right: 2px solid #00f0ff;
+  padding: 20px;
+  box-shadow: 4px 0 10px #00f0ff55;
 }
 
-.login-container {
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 16px;
-  padding: 30px;
+.sidebar h2 {
+  color: #00f0ff;
   text-align: center;
-  color: #fff;
-  box-shadow: 0 0 30px #0ff;
-  width: 90%;
-  max-width: 400px;
+  margin-bottom: 30px;
 }
 
-.login-container h1 {
-  font-size: 2rem;
-  color: #0ff;
-  margin-bottom: 20px;
-}
-
-.login-container input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.login-container button {
-  background: #8000ff;
+.sidebar a {
+  display: block;
   color: white;
+  text-decoration: none;
+  margin: 10px 0;
   padding: 12px;
-  width: 100%;
-  border: none;
   border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
+  background: #1b1b2f;
+  transition: background 0.3s, transform 0.2s;
+  font-size: 16px;
 }
 
-.login-container button:hover {
-  background: #9f00ff;
+.sidebar a:hover {
+  background: #00f0ff;
+  color: black;
+  transform: scale(1.05);
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-image: url('robot2.jpg');
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(6px);
+  position: relative;
+  z-index: 1;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 250px;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 0;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+button {
+  padding: 12px 20px;
+  background: #00f0ff;
+  border: none;
+  border-radius: 6px;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00f0ff77;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  background: #00e0e0;
+  transform: scale(1.05);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00f0ffaa;
+  border-radius: 10px;
 }
