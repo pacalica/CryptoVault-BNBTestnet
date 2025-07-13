@@ -4,54 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel - CryptoVault</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="admin-page">
-  <div class="sidebar">
-    <h2>CryptoVault</h2>
-    <ul>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="deposit.html">Open Deposit</a></li>
-      <li><a href="withdraw.html">Withdraw</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="team.html">My Team</a></li>
-      <li><a href="affiliate.html">Affiliate Link</a></li>
-      <li><a href="settings.html">Settings</a></li>
-      <li><a href="security.html">Security</a></li>
-      <li><a href="admin.html" class="active">Admin</a></li>
-      <li><a href="index.html" onclick="logout()">Exit</a></li>
-    </ul>
-  </div>
-
-  <div class="main-content">
+<body class="admin-body">
+  <div class="container admin-container">
     <h1>Admin Panel</h1>
 
-    <div class="admin-section">
-      <h2>Total Earnings</h2>
-      <p><strong>Total Deposits:</strong> <span id="totalDeposits">0</span> USDT</p>
-      <p><strong>Total Referral Bonuses:</strong> <span id="totalReferral">0</span> USDT</p>
-    </div>
+    <!-- Section: Withdrawal Requests -->
+    <section>
+      <h2>Pending Withdrawal Requests</h2>
+      <div id="withdrawalsList" class="card-list"></div>
+    </section>
 
-    <div class="admin-section">
-      <h2>Referral Structure</h2>
-      <div id="referralList">
-        <!-- Referral data populated here -->
-      </div>
-    </div>
+    <!-- Section: Modify Balances -->
+    <section>
+      <h2>Modify User Balances</h2>
+      <form id="balanceForm" class="form-style">
+        <input type="text" id="balanceEmail" placeholder="User Email" required />
+        <input type="number" id="balanceAmount" placeholder="New Balance (USDT)" required />
+        <button type="submit">Update Balance</button>
+      </form>
+      <div id="balanceStatus" class="status-message"></div>
+    </section>
 
-    <div class="admin-section">
-      <h2>Manual Balance Adjustment</h2>
-      <input type="email" id="targetEmail" placeholder="User Email" />
-      <input type="number" id="newBalance" placeholder="New Balance (USDT)" />
-      <button onclick="updateBalance()">Update Balance</button>
-    </div>
-
-    <div class="admin-section">
-      <h2>Withdrawal Requests</h2>
-      <div id="withdrawRequests">
-        <!-- Requests populated dynamically -->
-      </div>
-    </div>
+    <a href="dashboard.html" class="btn-back">⬅ Back to Dashboard</a>
   </div>
 
   <script src="admin.js"></script>
