@@ -2,49 +2,151 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CryptoVault Dashboard</title>
-  <link rel="manifest" href="manifest.json" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | CryptoVault</title>
   <link rel="stylesheet" href="style.css" />
-  <meta name="theme-color" content="#0ff" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      color: #fff;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 240px;
+      background-color: #111;
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    aside h1 {
+      font-size: 1.5em;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    aside ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    aside li {
+      margin: 15px 0;
+    }
+
+    aside a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 1em;
+    }
+
+    aside a.active,
+    aside a:hover {
+      color: cyan;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 30px;
+    }
+
+    .menu-toggle {
+      display: none;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #222;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      font-size: 1.2em;
+      z-index: 1000;
+    }
+
+    @media (max-width: 768px) {
+      aside {
+        position: fixed;
+        height: 100%;
+        transform: translateX(-100%);
+        z-index: 999;
+      }
+
+      aside.open {
+        transform: translateX(0);
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      main {
+        padding: 20px;
+        margin-top: 60px;
+      }
+    }
+  </style>
 </head>
-<body class="neon-bg">
-  <div class="app-container">
-    <aside class="sidebar">
-      <h1 class="logo">CryptoVault</h1>
-      <nav>
-        <ul>
-          <li><a href="dashboard.html" class="active">Dashboard</a></li>
-          <li><a href="deposit.html">Open deposit</a></li>
-          <li><a href="deposits.html">Deposits</a></li>
-          <li><a href="withdraw.html">Withdraw</a></li>
-          <li><a href="history.html">History</a></li>
-          <li><a href="team.html">My team</a></li>
-          <li><a href="referral.html">Affiliate link</a></li>
-          <li><a href="settings.html">Settings</a></li>
-          <li><a href="security.html">Security</a></li>
-          <li><a href="index.html" onclick="localStorage.clear()">Exit</a></li>
-        </ul>
-      </nav>
+<body>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+  <div class="container">
+    <aside id="sidebar">
+      <h1>CryptoVault</h1>
+      <ul>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="deposit.html">Open deposit</a></li>
+        <li><a href="deposits.html">Deposits</a></li>
+        <li><a href="withdraw.html">Withdraw</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="team.html">My team</a></li>
+        <li><a href="affiliate.html">Affiliate link</a></li>
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="security.html">Security</a></li>
+        <li><a href="#" onclick="logout()">Exit</a></li>
+      </ul>
     </aside>
 
-    <main class="main-content">
-      <section class="dashboard-section">
-        <h2 class="section-title">Dashboard</h2>
-
-        <div class="user-info neon-card">
-          <h3>Welcome, <span id="username"></span> 👋</h3>
-          <p><strong>Email:</strong> <span id="user-email"></span></p>
-          <p><strong>Total Invested:</strong> <span id="total-deposit">0.00 USDT</span></p>
-        </div>
-
-        <div class="tip neon-card">
-          <p>You can view your open deposits in the <strong>Deposits</strong> tab and request withdrawals weekly.</p>
-        </div>
-      </section>
+    <main>
+      <h2>Welcome, <span id="username">User</span> 👋</h2>
+      <p>Email: <strong id="user-email">-</strong></p>
+      <p>Total Invested: <strong id="total-deposit">0.00 USDT</strong></p>
+      <br />
+      <p>You can view your open deposits in the <strong>Deposits</strong> tab and request withdrawals weekly.</p>
     </main>
   </div>
 
-  <script src="dashboard.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const email = localStorage.getItem("email");
+      const username = localStorage.getItem("username");
+      const total = localStorage.getItem("totalDeposit") || "0.00";
+
+      if (!email || !username) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      document.getElementById("user-email").textContent = email;
+      document.getElementById("username").textContent = username;
+      document.getElementById("total-deposit").textContent = `${parseFloat(total).toFixed(2)} USDT`;
+    });
+  </script>
 </body>
 </html>
