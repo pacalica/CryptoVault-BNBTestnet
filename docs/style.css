@@ -1,157 +1,180 @@
-/* Reset */
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Fundal neon pentru pagina de logare */
+/* Font */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at center, #0ff2, #222);
-  color: #fff;
-  min-height: 100vh;
+  color: white;
+  overflow-x: hidden;
 }
 
-/* Login */
-.login-container {
-  max-width: 400px;
-  margin: 10vh auto;
-  background: rgba(0, 0, 0, 0.7);
+/* === LOGIN PAGE === */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #0ff, #8f00ff);
+  animation: pulseBG 10s infinite alternate;
+}
+
+@keyframes pulseBG {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(45deg);
+  }
+}
+
+.login-box {
+  background-color: rgba(0, 0, 0, 0.85);
   padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 0 30px #0ff8;
+  border-radius: 12px;
+  box-shadow: 0 0 30px cyan;
+  width: 320px;
+}
+
+.login-box h2 {
   text-align: center;
-}
-
-.login-container h1 {
-  color: #0ff;
-  margin-bottom: 1.5rem;
-}
-
-.login-container input {
-  width: 100%;
-  padding: 0.8rem;
-  margin: 0.5rem 0;
-  background: #111;
-  border: 1px solid #0ff;
-  border-radius: 10px;
+  margin-bottom: 1rem;
   color: #0ff;
 }
 
-.login-container button {
+.login-box input {
   width: 100%;
-  padding: 0.8rem;
-  background: #0ff;
-  color: #000;
-  font-weight: bold;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
   border: none;
-  border-radius: 10px;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: 0.3s;
+  border-radius: 8px;
+  background-color: #222;
+  color: white;
 }
 
-.login-container button:hover {
-  background: #00f6ff;
-  transform: scale(1.05);
+.login-box button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #8f00ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
-/* App main layout */
-#main-app {
+.login-box button:hover {
+  background-color: #aa00ff;
+}
+
+/* === DASHBOARD === */
+.dashboard {
   display: flex;
   height: 100vh;
-  background: url("robot2.jpg") no-repeat center center fixed;
-  background-size: cover;
+  overflow: hidden;
 }
 
 /* Sidebar */
 .sidebar {
   width: 220px;
-  background: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
   padding: 1rem;
-  color: #0ff;
-  box-shadow: 2px 0 10px rgba(0, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #444;
 }
 
 .sidebar h2 {
-  font-size: 1.4rem;
+  color: #0ff;
   margin-bottom: 1rem;
-}
-
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar li {
-  padding: 0.7rem;
-  margin: 0.3rem 0;
-  background: #111;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.sidebar li:hover {
-  background: #0ff3;
-}
-
-/* Content */
-.content {
-  flex-grow: 1;
-  padding: 2rem;
-  background: rgba(0, 0, 0, 0.6);
-  overflow-y: auto;
-}
-
-.app-section {
-  display: none;
-}
-
-.app-section.active {
-  display: block;
-}
-
-/* Deposit Section */
-.deposit-box {
-  margin-top: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  border: 1px solid #0ff;
-  border-radius: 10px;
   text-align: center;
 }
 
-.deposit-box .address {
-  font-family: monospace;
-  font-size: 0.95rem;
-  margin: 1rem 0;
-  color: #fff;
-  background: #000;
-  padding: 0.5rem;
-  border-radius: 5px;
-  word-break: break-all;
-}
-
-.deposit-box img {
-  margin: 1rem auto;
-  width: 150px;
-  height: 150px;
-  border: 2px solid #0ff;
-  border-radius: 10px;
-}
-
-.deposit-box button {
-  background: #0ff;
-  color: #000;
-  font-weight: bold;
+.sidebar button {
+  background: none;
   border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 10px;
+  color: white;
+  margin: 0.5rem 0;
+  padding: 0.6rem;
+  text-align: left;
+  border-radius: 8px;
+  transition: background 0.3s;
   cursor: pointer;
-  margin-top: 1rem;
 }
 
-.deposit-box button:hover {
-  background: #00f6ff;
+.sidebar button:hover {
+  background-color: #0ff;
+  color: #000;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  background-image: url("robot2.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Card Styling */
+.card {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px violet;
+  margin-bottom: 1.5rem;
+}
+
+/* QR Code Box */
+.qr-box {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 12px cyan;
+}
+
+.qr-box img {
+  margin: 1rem 0;
+  width: 200px;
+  height: 200px;
+}
+
+/* Headings and text */
+h1, h2, h3 {
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+p {
+  color: #ccc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #444;
+  }
+
+  .sidebar button {
+    flex: 1;
+    text-align: center;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
 }
