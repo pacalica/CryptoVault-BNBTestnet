@@ -1,62 +1,36 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const deposits = JSON.parse(localStorage.getItem('deposits')) || [];
-  const withdrawals = JSON.parse(localStorage.getItem('withdrawals')) || [];
-
-  if (!user) {
-    window.location.href = "index.html";
-    return;
+document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || !user.email) {
+    alert("You must be logged in.");
+    return window.location.href = "index.html";
   }
 
-  const historyList = document.getElementById('historyList');
+  const deposits = JSON.parse(localStorage.getItem("deposits") || "[]")
+    .filter(dep => dep.email === user.email);
+  const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]")
+    .filter(w => w.email === user.email);
 
-  // Funcție pentru formatare dată
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-  }
+  const depositList = document.getElementById("depositList");
+  const withdrawList = document.getElementById("withdrawList");
 
-  // Depuneri
-  const userDeposits = deposits.filter(d => d.userEmail === user.email);
-  if (userDeposits.length > 0) {
-    const depositTitle = document.createElement('h3');
-    depositTitle.textContent = "Deposit History";
-    historyList.appendChild(depositTitle);
-
-    userDeposits.forEach(dep => {
-      const item = document.createElement('div');
-      item.className = `history-item status-${dep.status}`;
-      item.innerHTML = `
-        <p><strong>Amount:</strong> ${dep.amount} USDT</p>
-        <p><strong>Interest:</strong> ${dep.interest}%</p>
-        <p><strong>Plan:</strong> ${dep.duration} months</p>
-        <p><strong>Status:</strong> ${dep.status}</p>
-        <p><strong>Date:</strong> ${formatDate(dep.timestamp)}</p>
-      `;
-      historyList.appendChild(item);
+  if (deposits.length === 0) {
+    depositList.innerHTML = "<li>No deposits yet.</li>";
+  } else {
+    deposits.forEach(dep => {
+      const li = document.createElement("li");
+      li.innerHTML = `Amount: <b>${dep.amount} USDT</b>, Duration: ${dep.duration} month(s), Status: ${dep.confirmed ? "✅ Confirmed" : "⏳ Pending"}, Date: ${new Date(dep.timestamp).toLocaleString()}`;
+      depositList.appendChild(li);
     });
   }
 
-  // Retrageri
-  const userWithdrawals = withdrawals.filter(w => w.userEmail === user.email);
-  if (userWithdrawals.length > 0) {
-    const withdrawTitle = document.createElement('h3');
-    withdrawTitle.textContent = "Withdrawal History";
-    historyList.appendChild(withdrawTitle);
-
-    userWithdrawals.forEach(w => {
-      const item = document.createElement('div');
-      item.className = `history-item status-${w.status}`;
-      item.innerHTML = `
-        <p><strong>Amount:</strong> ${w.amount} USDT</p>
-        <p><strong>Status:</strong> ${w.status}</p>
-        <p><strong>Date:</strong> ${formatDate(w.timestamp)}</p>
-      `;
-      historyList.appendChild(item);
+  if (withdrawals.length === 0) {
+    withdrawList.innerHTML = "<li>No withdrawals yet.</li>";
+  } else {
+    withdrawals.forEach(w => {
+      const li = document.createElement("li");
+      let emoji = w.status === "pending" ? "⏳" : (w.status === "approved" ? "✅" : "❌");
+      li.innerHTML = `Amount: <b>${w.amount} USDT</b>, Status: ${emoji} ${w.status}, Date: ${new Date(w.timestamp).toLocaleString()}`;
+      withdrawList.appendChild(li);
     });
-  }
-
-  if (userDeposits.length === 0 && userWithdrawals.length === 0) {
-    historyList.innerHTML = "<p>No transactions found.</p>";
   }
 });
