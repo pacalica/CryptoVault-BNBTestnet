@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Withdraw - Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('robot2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.85);
+      height: 100vh;
+      padding: 20px;
+      box-shadow: 0 0 20px #00ffcc;
+    }
+
+    .sidebar h2 {
+      color: #00ffcc;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      padding: 10px 0;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      color: #00ffcc;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .section h3 {
+      color: #00ffcc;
+    }
+
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    input {
+      background: #222;
+      color: #fff;
+    }
+
+    button {
+      background: #00ffaa;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00ddaa;
+    }
+
+    .msg {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #ffcc00;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Crypto Vault</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="deposit.html">Open Deposit</a>
+    <a href="deposits.html">Deposits</a>
+    <a href="#">Withdraw</a>
+    <a href="history.html">History</a>
+    <a href="team.html">My Team</a>
+    <a href="#" onclick="copyReferral()">Affiliate Link</a>
+    <a href="settings.html">Settings</a>
+    <a href="security.html">Security</a>
+    <a href="#" onclick="logout()">Exit</a>
+  </div>
+
+  <div class="main-content">
+    <div class="section">
+      <h3>Request Withdrawal</h3>
+      <input type="number" id="withdrawAmount" placeholder="Amount (USDT)" min="1" />
+      <button onclick="requestWithdraw()">Request</button>
+      <div class="msg" id="msg"></div>
+    </div>
+  </div>
+
+  <script>
+    const username = localStorage.getItem("username");
+    if (!username) {
+      window.location.href = "index.html";
+    }
+
+    function copyReferral() {
+      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
+      const link = `${window.location.origin}/index.html?ref=${wallet}`;
+      navigator.clipboard.writeText(link);
+      alert("Referral link copied!");
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    function requestWithdraw() {
+      const msg = document.getElementById("msg");
+      const amount = parseFloat(document.getElementById("withdrawAmount").value);
+      if (!amount || amount <= 0) {
+        msg.innerText = "Please enter a valid amount.";
+        return;
+      }
+
+      const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
+      if (deposits.length === 0) {
+        msg.innerText = "You must have at least one deposit to withdraw.";
+        return;
+      }
+
+      const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
+      const hasPending = withdrawals.some(w => w.status === "pending");
+      if (hasPending) {
+        msg.innerText = "You already have a pending withdrawal.";
+        return;
+      }
+
+      withdrawals.push({
+        amount: amount.toFixed(2),
+        date: new Date().toLocaleString(),
+        status: "pending"
+      });
+
+      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+      msg.innerText = "Withdrawal request submitted successfully!";
+      document.getElementById("withdrawAmount").value = "";
+    }
+  </script>
+</body>
+</html>
