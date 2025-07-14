@@ -3,147 +3,151 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Withdrawal History - Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Withdrawal History | Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="manifest.json"/>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
       background: url('robot2.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      display: flex;
+      color: #0ff;
     }
 
     .sidebar {
-      width: 250px;
-      background: rgba(0, 0, 0, 0.85);
-      height: 100vh;
+      width: 240px;
+      background: rgba(0, 0, 0, 0.9);
       padding: 20px;
-      box-shadow: 0 0 20px #00ffcc;
-    }
-
-    .sidebar h2 {
-      color: #00ffcc;
-      margin-bottom: 30px;
+      height: 100vh;
+      box-shadow: 2px 0 15px #0ff;
     }
 
     .sidebar a {
       display: block;
-      color: #ccc;
-      padding: 10px 0;
+      color: #fff;
       text-decoration: none;
-      transition: 0.2s;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      color: #00ffcc;
+      background: #00ffff;
+      color: #000;
     }
 
-    .main-content {
+    .main {
       flex-grow: 1;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
     }
 
-    h3 {
-      color: #00ffcc;
+    h1 {
+      color: #00ffff;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
-      background: rgba(0, 0, 0, 0.7);
+      background: #000;
+      color: #0ff;
     }
 
     th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #444;
+      padding: 10px;
+      border: 1px solid #0ff;
+      text-align: center;
     }
 
     th {
-      color: #00ffaa;
+      background: #111;
     }
 
-    td.status-pending {
-      color: #ffcc00;
+    .pending {
+      color: orange;
     }
 
-    td.status-successful {
-      color: #00ff00;
+    .approved {
+      color: lime;
     }
 
-    td.status-rejected {
-      color: #ff3333;
+    .rejected {
+      color: red;
+    }
+
+    .info {
+      margin-bottom: 15px;
+      color: #0ff;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>Crypto Vault</h2>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="deposit.html">Open Deposit</a>
-    <a href="deposits.html">Deposits</a>
-    <a href="withdraw.html">Withdraw</a>
-    <a href="#">History</a>
-    <a href="team.html">My Team</a>
-    <a href="#" onclick="copyReferral()">Affiliate Link</a>
-    <a href="settings.html">Settings</a>
-    <a href="security.html">Security</a>
-    <a href="#" onclick="logout()">Exit</a>
+    <h2>Safe Vault</h2>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="deposit.html">💰 Open Deposit</a>
+    <a href="withdraw.html">📤 Withdraw</a>
+    <a href="history.html">📜 History</a>
+    <a href="team.html">👥 My Team</a>
+    <a href="referral.html">🔗 Affiliate Link</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="security.html">🔒 Security</a>
+    <a href="#" onclick="logout()">🚪 Exit</a>
   </div>
 
-  <div class="main-content">
-    <h3>Withdrawal History</h3>
-    <table id="withdrawalsTable">
+  <div class="main">
+    <h1>Withdrawal History</h1>
+    <p class="info">Below is a list of your withdrawal requests.</p>
+
+    <table>
       <thead>
         <tr>
-          <th>Amount (USDT)</th>
-          <th>Date</th>
+          <th>#</th>
+          <th>Requested</th>
+          <th>After Fee</th>
           <th>Status</th>
+          <th>Date</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Will be filled by JS -->
+      <tbody id="historyTable">
+        <!-- Rows added by JS -->
       </tbody>
     </table>
   </div>
 
   <script>
-    const username = localStorage.getItem("username");
-    if (!username) {
-      window.location.href = "index.html";
+    const user = localStorage.getItem("user_email");
+    const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
+    const table = document.getElementById("historyTable");
+
+    const userWithdrawals = withdrawals.filter(w => w.user === user);
+
+    if (userWithdrawals.length === 0) {
+      table.innerHTML = '<tr><td colspan="5">No withdrawals yet.</td></tr>';
+    } else {
+      userWithdrawals.reverse().forEach((w, index) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${w.full} USDT</td>
+          <td>${w.amount} USDT</td>
+          <td class="${w.status}">${w.status.toUpperCase()}</td>
+          <td>${new Date(w.date).toLocaleString()}</td>
+        `;
+
+        table.appendChild(row);
+      });
     }
 
     function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
-
-    function copyReferral() {
-      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
-      const link = `${window.location.origin}/index.html?ref=${wallet}`;
-      navigator.clipboard.writeText(link);
-      alert("Referral link copied!");
-    }
-
-    const tableBody = document.querySelector("#withdrawalsTable tbody");
-    const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
-
-    if (withdrawals.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="3">No withdrawal history yet.</td></tr>`;
-    } else {
-      withdrawals.forEach(w => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${w.amount}</td>
-          <td>${w.date}</td>
-          <td class="status-${w.status.toLowerCase()}">${w.status}</td>
-        `;
-        tableBody.appendChild(tr);
-      });
+      localStorage.removeItem("user_email");
+      localStorage.removeItem("user_name");
+      location.href = "index.html";
     }
   </script>
 </body>
