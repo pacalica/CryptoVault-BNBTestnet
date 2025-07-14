@@ -3,135 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Settings | Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="manifest" href="manifest.json"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      background: url('robot2.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #0ff;
-    }
-
-    .sidebar {
-      width: 240px;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 20px;
-      height: 100vh;
-      box-shadow: 2px 0 15px #0ff;
-    }
-
-    .sidebar a {
-      display: block;
-      color: #fff;
-      text-decoration: none;
-      margin: 15px 0;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background: #00ffff;
-      color: #000;
-    }
-
-    .main {
-      flex-grow: 1;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.75);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    h1 {
-      color: #00ffff;
-      margin-bottom: 30px;
-    }
-
-    input {
-      padding: 12px;
-      font-size: 16px;
-      margin: 10px;
-      border: 1px solid #0ff;
-      border-radius: 8px;
-      background: #111;
-      color: #0ff;
-      width: 300px;
-    }
-
-    button {
-      padding: 10px 25px;
-      font-size: 16px;
-      margin-top: 20px;
-      border-radius: 8px;
-      background: #0ff;
-      color: #000;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #00cccc;
-    }
-
-    .success {
-      margin-top: 15px;
-      color: #0f0;
-    }
-  </style>
+  <title>Settings - Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="sidebar">
-    <h2>Safe Vault</h2>
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="deposit.html">💰 Open Deposit</a>
-    <a href="withdraw.html">📤 Withdraw</a>
-    <a href="history.html">📜 History</a>
-    <a href="team.html">👥 My Team</a>
-    <a href="referral.html">🔗 Affiliate Link</a>
-    <a href="settings.html">⚙️ Settings</a>
-    <a href="security.html">🔒 Security</a>
-    <a href="#" onclick="logout()">🚪 Exit</a>
+<body class="bg-dark">
+  <div class="container">
+    <h1 class="neon-text">Account Settings</h1>
+
+    <form id="settingsForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+
+      <label for="username">Username:</label>
+      <input type="text" id="username" required />
+
+      <button type="submit">Save Changes</button>
+    </form>
+
+    <p><a href="dashboard.html">⬅ Back to Dashboard</a></p>
   </div>
 
-  <div class="main">
-    <h1>⚙️ Update Profile</h1>
-    <input type="text" id="username" placeholder="Your Name" />
-    <input type="email" id="email" placeholder="Your Email" />
-    <button onclick="updateSettings()">💾 Save</button>
-    <div class="success" id="msg" style="display:none;">✅ Saved successfully!</div>
-  </div>
-
-  <script>
-    const nameInput = document.getElementById("username");
-    const emailInput = document.getElementById("email");
-
-    window.onload = () => {
-      nameInput.value = localStorage.getItem("user_name") || "";
-      emailInput.value = localStorage.getItem("user_email") || "";
-    };
-
-    function updateSettings() {
-      localStorage.setItem("user_name", nameInput.value.trim());
-      localStorage.setItem("user_email", emailInput.value.trim());
-      document.getElementById("msg").style.display = "block";
-      setTimeout(() => {
-        document.getElementById("msg").style.display = "none";
-      }, 2000);
-    }
-
-    function logout() {
-      localStorage.removeItem("user_email");
-      localStorage.removeItem("user_name");
-      location.href = "index.html";
-    }
-  </script>
+  <script src="settings.js"></script>
 </body>
 </html>
