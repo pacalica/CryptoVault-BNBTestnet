@@ -3,164 +3,194 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Open Deposit - Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Open Deposit | Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="manifest.json"/>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
       background: url('robot2.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      display: flex;
+      color: #00ffff;
     }
 
     .sidebar {
-      width: 250px;
-      background: rgba(0, 0, 0, 0.85);
-      height: 100vh;
+      width: 240px;
+      background: rgba(0, 0, 0, 0.9);
       padding: 20px;
-      box-shadow: 0 0 20px #00ffcc;
-    }
-
-    .sidebar h2 {
-      color: #00ffcc;
-      margin-bottom: 30px;
+      height: 100vh;
+      box-shadow: 2px 0 15px #0ff;
     }
 
     .sidebar a {
       display: block;
-      color: #ccc;
-      padding: 10px 0;
+      color: #fff;
       text-decoration: none;
-      transition: 0.2s;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      color: #00ffcc;
+      background: #00ffff;
+      color: #000;
     }
 
-    .main-content {
+    .main {
       flex-grow: 1;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
     }
 
-    .section {
-      margin-bottom: 30px;
+    h1 {
+      margin-top: 0;
+      color: #00ffff;
     }
 
-    .section h3 {
-      color: #00ffcc;
-    }
-
-    .info-box {
-      background: rgba(0,0,0,0.7);
+    .form-box {
+      background: #111;
+      border: 1px solid #0ff;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 0 10px #00ffaa;
+      max-width: 500px;
     }
 
-    input, button {
-      margin-top: 15px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
+    .form-box input, .form-box select {
       width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background: #000;
+      color: #0ff;
+      border: 1px solid #0ff;
+      border-radius: 6px;
     }
 
-    input {
-      background: #111;
-      color: #0ff;
+    .qr-box {
+      margin-top: 20px;
+      text-align: center;
     }
 
     button {
-      background: #00ffaa;
-      font-weight: bold;
+      background: #0ff;
+      border: none;
       color: #000;
+      padding: 10px 20px;
+      font-weight: bold;
       cursor: pointer;
+      border-radius: 8px;
+      margin-top: 10px;
     }
 
     button:hover {
-      background: #00ddaa;
-    }
-
-    #qrcode {
-      margin: 20px auto;
-      max-width: 220px;
+      background: #00cccc;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>Crypto Vault</h2>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="#">Open Deposit</a>
-    <a href="deposits.html">Deposits</a>
-    <a href="withdraw.html">Withdraw</a>
-    <a href="history.html">History</a>
-    <a href="team.html">My Team</a>
-    <a href="#" onclick="copyReferral()">Affiliate Link</a>
-    <a href="settings.html">Settings</a>
-    <a href="security.html">Security</a>
-    <a href="#" onclick="logout()">Exit</a>
+    <h2>Safe Vault</h2>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="deposit.html">💰 Open Deposit</a>
+    <a href="withdraw.html">📤 Withdraw</a>
+    <a href="history.html">📜 History</a>
+    <a href="team.html">👥 My Team</a>
+    <a href="referral.html">🔗 Affiliate Link</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="security.html">🔒 Security</a>
+    <a href="#" onclick="logout()">🚪 Exit</a>
   </div>
 
-  <div class="main-content">
-    <div class="section">
-      <h3>Send USDT to the Vault</h3>
-      <div class="info-box">
-        <p><strong>Send USDT (BEP20) to:</strong></p>
-        <p id="walletAddress">0x124377FCe14439248a4959ce528314aA3A897321</p>
-        <div id="qrcode"></div>
-        <input type="number" id="depositAmount" placeholder="Enter amount sent (USDT)" />
-        <button onclick="confirmDeposit()">I’ve sent deposit</button>
+  <div class="main">
+    <h1>Open a New Deposit</h1>
+
+    <div class="form-box">
+      <label>Enter amount (USDT):</label>
+      <input type="number" id="amount" placeholder="e.g. 1000" min="10" />
+
+      <label>Select duration:</label>
+      <select id="duration">
+        <option value="1">1 month</option>
+        <option value="3">3 months</option>
+        <option value="5">5 months</option>
+      </select>
+
+      <label>Interest plan (auto):</label>
+      <input type="text" id="interestRate" disabled />
+
+      <label>Estimated return:</label>
+      <input type="text" id="estimatedReturn" disabled />
+
+      <label>Deposit to (BNB Chain - BEP20):</label>
+      <input type="text" id="walletAddress" value="0x124377FCe14439248a4959ce528314aA3A897321" readonly />
+
+      <div class="qr-box">
+        <canvas id="qrcode"></canvas>
       </div>
+
+      <button onclick="submitDeposit()">I've sent deposit</button>
     </div>
   </div>
 
+  <script src="script.js"></script>
   <script>
-    const username = localStorage.getItem("username");
-    if (!username) {
-      window.location.href = "index.html";
+    const amountInput = document.getElementById("amount");
+    const interestRateInput = document.getElementById("interestRate");
+    const estimatedReturnInput = document.getElementById("estimatedReturn");
+
+    amountInput.addEventListener("input", updateCalculation);
+    document.getElementById("duration").addEventListener("change", updateCalculation);
+
+    function updateCalculation() {
+      const amount = parseFloat(amountInput.value);
+      let rate = 0;
+
+      if (amount >= 0 && amount < 2000) rate = 3.5;
+      else if (amount >= 2000 && amount < 5000) rate = 5.5;
+      else if (amount >= 5000) rate = 7.5;
+
+      const duration = parseInt(document.getElementById("duration").value);
+      const estimated = amount + (amount * rate / 100);
+
+      interestRateInput.value = rate + "%";
+      estimatedReturnInput.value = isNaN(estimated) ? "-" : estimated.toFixed(2) + " USDT";
     }
 
-    const address = document.getElementById("walletAddress").innerText;
-    QRCode.toCanvas(document.createElement("canvas"), address, { width: 200 }, function (error, canvas) {
-      if (!error) {
-        document.getElementById("qrcode").appendChild(canvas);
-      }
-    });
+    // Generate QR code
+    const address = document.getElementById("walletAddress").value;
+    QRCode.toCanvas(document.getElementById('qrcode'), address, { width: 160 });
 
-    function confirmDeposit() {
-      const input = document.getElementById("depositAmount");
-      const amount = parseFloat(input.value);
-      if (isNaN(amount) || amount <= 0) {
-        alert("Please enter a valid amount.");
+    function submitDeposit() {
+      const amount = parseFloat(amountInput.value);
+      const duration = parseInt(document.getElementById("duration").value);
+      const rate = parseFloat(interestRateInput.value);
+      const user = localStorage.getItem("user_email");
+
+      if (!amount || amount < 10 || !duration) {
+        alert("Please enter valid amount and duration.");
         return;
       }
 
-      let current = parseFloat(localStorage.getItem("totalInvested") || "0");
-      current += amount;
-      localStorage.setItem("totalInvested", current.toFixed(2));
+      const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
+      deposits.push({
+        user,
+        amount,
+        duration,
+        rate,
+        date: new Date().toISOString(),
+        status: "pending"
+      });
 
-      alert("Deposit recorded! It will be verified manually.");
-      window.location.href = "dashboard.html";
+      localStorage.setItem("deposits", JSON.stringify(deposits));
+      alert("Deposit request saved! It will be confirmed manually.");
+      location.href = "dashboard.html";
     }
 
-    function copyReferral() {
-      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
-      const link = `${window.location.origin}/index.html?ref=${wallet}`;
-      navigator.clipboard.writeText(link);
-      alert("Referral link copied!");
-    }
-
-    function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
+    updateCalculation(); // init
   </script>
 </body>
 </html>
