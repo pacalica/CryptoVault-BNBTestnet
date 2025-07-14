@@ -1,29 +1,30 @@
-const CACHE_NAME = 'cryptovault-cache-v1';
+const CACHE_NAME = "safe-crypto-vault-v1";
 const urlsToCache = [
-  './',
-  './index.html',
-  './script.js',
-  './abi.json',
-  './style.css',
-  './manifest.json',
-  './icon.png'
+  "index.html",
+  "dashboard.html",
+  "style.css",
+  "script.js",
+  "manifest.json",
+  "bg-robot.jpg",
+  "icons/icon-192.png",
+  "icons/icon-512.png"
 ];
 
-// Instalare service worker și cache-uire fișiere
-self.addEventListener('install', function(event) {
+// Instalare service worker
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
+    caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(urlsToCache);
     })
   );
 });
 
-// Activare și curățare cache vechi
-self.addEventListener('activate', function(event) {
+// Activare service worker
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
+    caches.keys().then((names) => {
       return Promise.all(
-        cacheNames.map(function(name) {
+        names.map((name) => {
           if (name !== CACHE_NAME) {
             return caches.delete(name);
           }
@@ -33,11 +34,11 @@ self.addEventListener('activate', function(event) {
   );
 });
 
-// Interceptarea cererilor
-self.addEventListener('fetch', function(event) {
+// Interceptare cereri
+self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
+    caches.match(event.request).then((resp) => {
+      return resp || fetch(event.request);
     })
   );
 });
