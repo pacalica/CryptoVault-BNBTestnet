@@ -3,156 +3,172 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Withdraw - Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Withdraw | Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="manifest.json"/>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
       background: url('robot2.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      display: flex;
+      color: #00ffff;
     }
 
     .sidebar {
-      width: 250px;
-      background: rgba(0, 0, 0, 0.85);
-      height: 100vh;
+      width: 240px;
+      background: rgba(0, 0, 0, 0.9);
       padding: 20px;
-      box-shadow: 0 0 20px #00ffcc;
-    }
-
-    .sidebar h2 {
-      color: #00ffcc;
-      margin-bottom: 30px;
+      height: 100vh;
+      box-shadow: 2px 0 15px #0ff;
     }
 
     .sidebar a {
       display: block;
-      color: #ccc;
-      padding: 10px 0;
+      color: #fff;
       text-decoration: none;
-      transition: 0.2s;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      color: #00ffcc;
+      background: #00ffff;
+      color: #000;
     }
 
-    .main-content {
+    .main {
       flex-grow: 1;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
     }
 
-    .section h3 {
-      color: #00ffcc;
+    h1 {
+      color: #00ffff;
     }
 
-    input, button {
-      padding: 10px;
-      margin-top: 10px;
-      width: 100%;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
+    .form-box {
+      background: #111;
+      border: 1px solid #0ff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
     }
 
     input {
-      background: #222;
-      color: #fff;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background: #000;
+      color: #0ff;
+      border: 1px solid #0ff;
+      border-radius: 6px;
     }
 
     button {
-      background: #00ffaa;
+      background: #0ff;
+      border: none;
       color: #000;
+      padding: 10px 20px;
+      font-weight: bold;
       cursor: pointer;
+      border-radius: 8px;
+      margin-top: 10px;
     }
 
     button:hover {
-      background: #00ddaa;
+      background: #00cccc;
     }
 
-    .msg {
-      margin-top: 15px;
-      font-weight: bold;
-      color: #ffcc00;
+    .info {
+      margin-top: 10px;
+      color: #0ff;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>Crypto Vault</h2>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="deposit.html">Open Deposit</a>
-    <a href="deposits.html">Deposits</a>
-    <a href="#">Withdraw</a>
-    <a href="history.html">History</a>
-    <a href="team.html">My Team</a>
-    <a href="#" onclick="copyReferral()">Affiliate Link</a>
-    <a href="settings.html">Settings</a>
-    <a href="security.html">Security</a>
-    <a href="#" onclick="logout()">Exit</a>
+    <h2>Safe Vault</h2>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="deposit.html">💰 Open Deposit</a>
+    <a href="withdraw.html">📤 Withdraw</a>
+    <a href="history.html">📜 History</a>
+    <a href="team.html">👥 My Team</a>
+    <a href="referral.html">🔗 Affiliate Link</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="security.html">🔒 Security</a>
+    <a href="#" onclick="logout()">🚪 Exit</a>
   </div>
 
-  <div class="main-content">
-    <div class="section">
-      <h3>Request Withdrawal</h3>
-      <input type="number" id="withdrawAmount" placeholder="Amount (USDT)" min="1" />
-      <button onclick="requestWithdraw()">Request</button>
-      <div class="msg" id="msg"></div>
+  <div class="main">
+    <h1>Withdraw Funds</h1>
+    <div class="form-box">
+      <p class="info">Withdrawals are available once per week. A 5% fee will apply.</p>
+
+      <label>Total Eligible (with interest):</label>
+      <input type="text" id="eligibleAmount" readonly />
+
+      <label>Amount after 5% fee:</label>
+      <input type="text" id="finalAmount" readonly />
+
+      <button onclick="submitWithdraw()">Request Withdrawal</button>
     </div>
   </div>
 
   <script>
-    const username = localStorage.getItem("username");
-    if (!username) {
-      window.location.href = "index.html";
-    }
+    const user = localStorage.getItem("user_email");
+    const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
+    const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
 
-    function copyReferral() {
-      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
-      const link = `${window.location.origin}/index.html?ref=${wallet}`;
-      navigator.clipboard.writeText(link);
-      alert("Referral link copied!");
-    }
+    const eligibleDeposits = deposits.filter(dep => dep.user === user && dep.status === "approved");
+    const alreadyPending = withdrawals.some(w => w.user === user && w.status === "pending");
 
-    function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
+    let total = 0;
 
-    function requestWithdraw() {
-      const msg = document.getElementById("msg");
-      const amount = parseFloat(document.getElementById("withdrawAmount").value);
-      if (!amount || amount <= 0) {
-        msg.innerText = "Please enter a valid amount.";
+    eligibleDeposits.forEach(dep => {
+      const gain = dep.amount * dep.rate / 100;
+      total += dep.amount + gain;
+    });
+
+    const afterFee = total * 0.95;
+
+    document.getElementById("eligibleAmount").value = total.toFixed(2) + " USDT";
+    document.getElementById("finalAmount").value = afterFee.toFixed(2) + " USDT";
+
+    function submitWithdraw() {
+      if (alreadyPending) {
+        alert("You already have a pending withdrawal.");
         return;
       }
 
-      const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
-      if (deposits.length === 0) {
-        msg.innerText = "You must have at least one deposit to withdraw.";
+      if (total <= 0) {
+        alert("No eligible deposits to withdraw.");
         return;
       }
 
-      const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
-      const hasPending = withdrawals.some(w => w.status === "pending");
-      if (hasPending) {
-        msg.innerText = "You already have a pending withdrawal.";
-        return;
-      }
+      const withdraws = JSON.parse(localStorage.getItem("withdrawals") || "[]");
 
-      withdrawals.push({
-        amount: amount.toFixed(2),
-        date: new Date().toLocaleString(),
+      withdraws.push({
+        user,
+        amount: afterFee.toFixed(2),
+        full: total.toFixed(2),
+        fee: "5%",
+        date: new Date().toISOString(),
         status: "pending"
       });
 
-      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-      msg.innerText = "Withdrawal request submitted successfully!";
-      document.getElementById("withdrawAmount").value = "";
+      localStorage.setItem("withdrawals", JSON.stringify(withdraws));
+      alert("Withdrawal request submitted!");
+      location.href = "history.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("user_email");
+      localStorage.removeItem("user_name");
+      location.href = "index.html";
     }
   </script>
 </body>
