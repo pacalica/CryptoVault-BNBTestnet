@@ -3,166 +3,138 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Security - Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Security | Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="manifest.json"/>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
       background: url('robot2.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      display: flex;
+      color: #0ff;
     }
 
     .sidebar {
-      width: 250px;
-      background: rgba(0, 0, 0, 0.85);
-      height: 100vh;
+      width: 240px;
+      background: rgba(0, 0, 0, 0.9);
       padding: 20px;
-      box-shadow: 0 0 20px #ff00ff;
-    }
-
-    .sidebar h2 {
-      color: #ff00ff;
-      margin-bottom: 30px;
+      height: 100vh;
+      box-shadow: 2px 0 15px #0ff;
     }
 
     .sidebar a {
       display: block;
-      color: #ccc;
-      padding: 10px 0;
+      color: #fff;
       text-decoration: none;
-      transition: 0.2s;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      color: #ff00ff;
+      background: #00ffff;
+      color: #000;
     }
 
-    .main-content {
+    .main {
       flex-grow: 1;
       padding: 40px;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
-    h3 {
-      color: #ff00ff;
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-top: 20px;
-      color: #ccc;
+    h1 {
+      color: #00ffff;
+      margin-bottom: 30px;
     }
 
     input {
-      width: 300px;
-      padding: 10px;
+      padding: 12px;
+      font-size: 16px;
+      margin: 10px;
+      border: 1px solid #0ff;
       border-radius: 8px;
-      border: none;
-      margin-top: 5px;
+      background: #111;
+      color: #0ff;
+      width: 300px;
     }
 
     button {
+      padding: 10px 25px;
+      font-size: 16px;
       margin-top: 20px;
-      padding: 12px 24px;
-      border: none;
-      background-color: #ff00ff;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
       border-radius: 8px;
+      background: #0ff;
+      color: #000;
+      border: none;
+      cursor: pointer;
     }
 
     button:hover {
-      background-color: #ff33ff;
-    }
-
-    .danger {
-      background-color: #ff3333;
-      margin-top: 40px;
+      background: #00cccc;
     }
 
     .success {
-      margin-top: 20px;
-      color: #00ffcc;
-      font-weight: bold;
+      margin-top: 15px;
+      color: #0f0;
+    }
+
+    .warning {
+      margin-top: 10px;
+      color: #f00;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>Crypto Vault</h2>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="deposit.html">Open Deposit</a>
-    <a href="deposits.html">Deposits</a>
-    <a href="withdraw.html">Withdraw</a>
-    <a href="history.html">History</a>
-    <a href="team.html">My Team</a>
-    <a href="#" onclick="copyReferral()">Affiliate Link</a>
-    <a href="settings.html">Settings</a>
-    <a href="#">Security</a>
-    <a href="#" onclick="logout()">Exit</a>
+    <h2>Safe Vault</h2>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="deposit.html">💰 Open Deposit</a>
+    <a href="withdraw.html">📤 Withdraw</a>
+    <a href="history.html">📜 History</a>
+    <a href="team.html">👥 My Team</a>
+    <a href="referral.html">🔗 Affiliate Link</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="security.html">🔒 Security</a>
+    <a href="#" onclick="logout()">🚪 Exit</a>
   </div>
 
-  <div class="main-content">
-    <h3>Security Options</h3>
-
-    <label for="newEmail">Change Email</label>
-    <input type="email" id="newEmail" placeholder="Enter new email" />
-    <button onclick="changeEmail()">Update Email</button>
-
-    <label for="newPassword">Change Local Password</label>
-    <input type="password" id="newPassword" placeholder="New password" />
-    <button onclick="changePassword()">Update Password</button>
-
-    <button class="danger" onclick="deleteAccount()">Delete Account</button>
-    <div class="success" id="successMsg"></div>
+  <div class="main">
+    <h1>🔒 Security Settings</h1>
+    <input type="password" id="newPin" placeholder="Enter new 4-digit PIN" maxlength="4"/>
+    <button onclick="setPin()">Save PIN</button>
+    <div id="msg" class="success" style="display:none;">✅ PIN set successfully!</div>
+    <div id="warn" class="warning" style="display:none;">❗ PIN must be 4 digits!</div>
   </div>
 
   <script>
-    const username = localStorage.getItem("username");
-    if (!username) window.location.href = "index.html";
+    function setPin() {
+      const pin = document.getElementById("newPin").value.trim();
+      if (pin.length !== 4 || isNaN(pin)) {
+        document.getElementById("warn").style.display = "block";
+        document.getElementById("msg").style.display = "none";
+        return;
+      }
 
-    let users = JSON.parse(localStorage.getItem("users") || "{}");
-
-    function changeEmail() {
-      const newEmail = document.getElementById("newEmail").value.trim();
-      if (!newEmail) return alert("Please enter an email.");
-      users[username].email = newEmail;
-      localStorage.setItem("users", JSON.stringify(users));
-      document.getElementById("successMsg").innerText = "Email updated.";
-    }
-
-    function changePassword() {
-      const newPass = document.getElementById("newPassword").value.trim();
-      if (!newPass) return alert("Enter a valid password.");
-      users[username].password = newPass;
-      localStorage.setItem("users", JSON.stringify(users));
-      document.getElementById("successMsg").innerText = "Password updated.";
-    }
-
-    function deleteAccount() {
-      if (!confirm("Are you sure you want to delete your local account?")) return;
-      delete users[username];
-      localStorage.setItem("users", JSON.stringify(users));
-      localStorage.removeItem("username");
-      alert("Account deleted. Redirecting...");
-      window.location.href = "index.html";
+      localStorage.setItem("user_pin", pin);
+      document.getElementById("warn").style.display = "none";
+      document.getElementById("msg").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("msg").style.display = "none";
+      }, 2000);
     }
 
     function logout() {
-      localStorage.removeItem("username");
-      window.location.href = "index.html";
-    }
-
-    function copyReferral() {
-      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
-      const link = `${window.location.origin}/index.html?ref=${wallet}`;
-      navigator.clipboard.writeText(link);
-      alert("Referral link copied!");
+      localStorage.removeItem("user_email");
+      localStorage.removeItem("user_name");
+      location.href = "index.html";
     }
   </script>
 </body>
