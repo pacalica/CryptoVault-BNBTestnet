@@ -1,76 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Safe Crypto Vault - Login</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#00ffff" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Safe Crypto Vault</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      background-size: 400% 400%;
-      animation: neonBG 15s ease infinite;
       color: #fff;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
+      background-size: cover;
+      background-repeat: no-repeat;
     }
 
-    @keyframes neonBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .login-box {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px #00ffcc;
+    .container {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 25px #00ffff;
       text-align: center;
-      width: 300px;
+      width: 90%;
+      max-width: 400px;
     }
 
-    .login-box h2 {
-      margin-bottom: 20px;
-      color: #00ffcc;
+    h1 {
+      color: #00ffff;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #ccc;
     }
 
     input {
       width: 100%;
       padding: 10px;
-      margin: 8px 0;
-      border: none;
+      margin: 10px 0;
       border-radius: 8px;
-      background: #222;
-      color: #fff;
+      border: none;
+      background-color: #111;
+      color: #00ffff;
+      font-size: 1rem;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      margin-top: 15px;
-      background: #00ffcc;
+      padding: 10px;
+      background-color: #00ffff;
+      color: #000;
       border: none;
       border-radius: 8px;
-      color: #000;
       font-weight: bold;
       cursor: pointer;
       transition: background 0.3s ease;
     }
 
     button:hover {
-      background: #00ffaa;
+      background-color: #0ff;
     }
 
-    .ref-text {
-      margin-top: 10px;
-      font-size:
+    .footer {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Safe Crypto Vault</h1>
+    <p>Secure your crypto. Grow with confidence.</p>
+
+    <input type="email" id="email" placeholder="Your email" required />
+    <input type="text" id="username" placeholder="Username" required />
+
+    <button onclick="login()">Enter Vault</button>
+
+    <div class="footer">
+      Powered by BNB Chain · PWA Enabled
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const username = document.getElementById("username").value.trim();
+
+      if (!email || !username) {
+        alert("Please enter both email and username.");
+        return;
+      }
+
+      localStorage.setItem("user_email", email);
+      localStorage.setItem("user_name", username);
+
+      window.location.href = "dashboard.html";
+    }
+
+    // Autologin
+    window.onload = () => {
+      const email = localStorage.getItem("user_email");
+      const username = localStorage.getItem("user_name");
+
+      if (email && username) {
+        window.location.href = "dashboard.html";
+      }
+    };
+
+    // Register service worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("✅ Service Worker registered"))
+        .catch(err => console.error("❌ Service Worker error:", err));
+    }
+  </script>
+</body>
+</html>
