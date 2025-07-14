@@ -1,15 +1,166 @@
-<!-- FORMULAR -->
-<input type="number" id="amount" placeholder="Enter USDT amount" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Open Deposit - Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('robot2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+    }
 
-<select id="duration">
-  <option value="1">1 lună</option>
-  <option value="3">3 luni</option>
-  <option value="5">5 luni</option>
-</select>
+    .sidebar {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.85);
+      height: 100vh;
+      padding: 20px;
+      box-shadow: 0 0 20px #00ffcc;
+    }
 
-<div id="planInfo" class="text-xs text-gray-300 mt-2"></div>
+    .sidebar h2 {
+      color: #00ffcc;
+      margin-bottom: 30px;
+    }
 
-<div class="text-sm mt-4">
-  Dobândă estimată: <span id="estimatedInterest">0</span> USDT<br />
-  Total return: <span id="totalReturn">0</span> USDT
-</div>
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      padding: 10px 0;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      color: #00ffcc;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section h3 {
+      color: #00ffcc;
+    }
+
+    .info-box {
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00ffaa;
+    }
+
+    input, button {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      width: 100%;
+    }
+
+    input {
+      background: #111;
+      color: #0ff;
+    }
+
+    button {
+      background: #00ffaa;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00ddaa;
+    }
+
+    #qrcode {
+      margin: 20px auto;
+      max-width: 220px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Crypto Vault</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#">Open Deposit</a>
+    <a href="deposits.html">Deposits</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="history.html">History</a>
+    <a href="team.html">My Team</a>
+    <a href="#" onclick="copyReferral()">Affiliate Link</a>
+    <a href="settings.html">Settings</a>
+    <a href="security.html">Security</a>
+    <a href="#" onclick="logout()">Exit</a>
+  </div>
+
+  <div class="main-content">
+    <div class="section">
+      <h3>Send USDT to the Vault</h3>
+      <div class="info-box">
+        <p><strong>Send USDT (BEP20) to:</strong></p>
+        <p id="walletAddress">0x124377FCe14439248a4959ce528314aA3A897321</p>
+        <div id="qrcode"></div>
+        <input type="number" id="depositAmount" placeholder="Enter amount sent (USDT)" />
+        <button onclick="confirmDeposit()">I’ve sent deposit</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const username = localStorage.getItem("username");
+    if (!username) {
+      window.location.href = "index.html";
+    }
+
+    const address = document.getElementById("walletAddress").innerText;
+    QRCode.toCanvas(document.createElement("canvas"), address, { width: 200 }, function (error, canvas) {
+      if (!error) {
+        document.getElementById("qrcode").appendChild(canvas);
+      }
+    });
+
+    function confirmDeposit() {
+      const input = document.getElementById("depositAmount");
+      const amount = parseFloat(input.value);
+      if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+      }
+
+      let current = parseFloat(localStorage.getItem("totalInvested") || "0");
+      current += amount;
+      localStorage.setItem("totalInvested", current.toFixed(2));
+
+      alert("Deposit recorded! It will be verified manually.");
+      window.location.href = "dashboard.html";
+    }
+
+    function copyReferral() {
+      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
+      const link = `${window.location.origin}/index.html?ref=${wallet}`;
+      navigator.clipboard.writeText(link);
+      alert("Referral link copied!");
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
