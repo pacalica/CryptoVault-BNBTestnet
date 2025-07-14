@@ -3,139 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Security | Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="manifest" href="manifest.json"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      background: url('robot2.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #0ff;
-    }
-
-    .sidebar {
-      width: 240px;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 20px;
-      height: 100vh;
-      box-shadow: 2px 0 15px #0ff;
-    }
-
-    .sidebar a {
-      display: block;
-      color: #fff;
-      text-decoration: none;
-      margin: 15px 0;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background: #00ffff;
-      color: #000;
-    }
-
-    .main {
-      flex-grow: 1;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.75);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    h1 {
-      color: #00ffff;
-      margin-bottom: 30px;
-    }
-
-    input {
-      padding: 12px;
-      font-size: 16px;
-      margin: 10px;
-      border: 1px solid #0ff;
-      border-radius: 8px;
-      background: #111;
-      color: #0ff;
-      width: 300px;
-    }
-
-    button {
-      padding: 10px 25px;
-      font-size: 16px;
-      margin-top: 20px;
-      border-radius: 8px;
-      background: #0ff;
-      color: #000;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #00cccc;
-    }
-
-    .success {
-      margin-top: 15px;
-      color: #0f0;
-    }
-
-    .warning {
-      margin-top: 10px;
-      color: #f00;
-    }
-  </style>
+  <title>Security - Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="sidebar">
-    <h2>Safe Vault</h2>
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="deposit.html">💰 Open Deposit</a>
-    <a href="withdraw.html">📤 Withdraw</a>
-    <a href="history.html">📜 History</a>
-    <a href="team.html">👥 My Team</a>
-    <a href="referral.html">🔗 Affiliate Link</a>
-    <a href="settings.html">⚙️ Settings</a>
-    <a href="security.html">🔒 Security</a>
-    <a href="#" onclick="logout()">🚪 Exit</a>
+<body class="bg-dark">
+  <div class="container">
+    <h1 class="neon-text">Security Settings</h1>
+
+    <form id="passwordForm">
+      <label for="currentPassword">Current Password:</label>
+      <input type="password" id="currentPassword" required />
+
+      <label for="newPassword">New Password:</label>
+      <input type="password" id="newPassword" required />
+
+      <label for="confirmPassword">Confirm New Password:</label>
+      <input type="password" id="confirmPassword" required />
+
+      <button type="submit">Update Password</button>
+    </form>
+
+    <p><a href="dashboard.html">⬅ Back to Dashboard</a></p>
   </div>
 
-  <div class="main">
-    <h1>🔒 Security Settings</h1>
-    <input type="password" id="newPin" placeholder="Enter new 4-digit PIN" maxlength="4"/>
-    <button onclick="setPin()">Save PIN</button>
-    <div id="msg" class="success" style="display:none;">✅ PIN set successfully!</div>
-    <div id="warn" class="warning" style="display:none;">❗ PIN must be 4 digits!</div>
-  </div>
-
-  <script>
-    function setPin() {
-      const pin = document.getElementById("newPin").value.trim();
-      if (pin.length !== 4 || isNaN(pin)) {
-        document.getElementById("warn").style.display = "block";
-        document.getElementById("msg").style.display = "none";
-        return;
-      }
-
-      localStorage.setItem("user_pin", pin);
-      document.getElementById("warn").style.display = "none";
-      document.getElementById("msg").style.display = "block";
-      setTimeout(() => {
-        document.getElementById("msg").style.display = "none";
-      }, 2000);
-    }
-
-    function logout() {
-      localStorage.removeItem("user_email");
-      localStorage.removeItem("user_name");
-      location.href = "index.html";
-    }
-  </script>
+  <script src="security.js"></script>
 </body>
 </html>
