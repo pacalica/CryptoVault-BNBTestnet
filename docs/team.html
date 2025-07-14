@@ -1,201 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Team | Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="manifest" href="manifest.json"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      background: url('robot2.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #0ff;
-    }
-
-    .sidebar {
-      width: 240px;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 20px;
-      height: 100vh;
-      box-shadow: 2px 0 15px #0ff;
-    }
-
-    .sidebar a {
-      display: block;
-      color: #fff;
-      text-decoration: none;
-      margin: 15px 0;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background: #00ffff;
-      color: #000;
-    }
-
-    .main {
-      flex-grow: 1;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.75);
-      min-height: 100vh;
-    }
-
-    h1 {
-      color: #00ffff;
-    }
-
-    .section {
-      margin-bottom: 30px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #000;
-      color: #0ff;
-      margin-top: 10px;
-    }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #0ff;
-      text-align: center;
-    }
-
-    th {
-      background: #111;
-    }
-
-    .total {
-      font-weight: bold;
-      margin-top: 10px;
-      color: #fff;
-    }
-  </style>
+  <title>My Team - Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="sidebar">
-    <h2>Safe Vault</h2>
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="deposit.html">💰 Open Deposit</a>
-    <a href="withdraw.html">📤 Withdraw</a>
-    <a href="history.html">📜 History</a>
-    <a href="team.html">👥 My Team</a>
-    <a href="referral.html">🔗 Affiliate Link</a>
-    <a href="settings.html">⚙️ Settings</a>
-    <a href="security.html">🔒 Security</a>
-    <a href="#" onclick="logout()">🚪 Exit</a>
-  </div>
+<body class="bg-dark">
+  <div class="container">
+    <h1 class="neon-text">My Team</h1>
 
-  <div class="main">
-    <h1>👥 My Referral Team</h1>
-
-    <div class="section">
-      <h2>Level 1 (Direct Referrals)</h2>
-      <div id="level1Total" class="total"></div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Email</th>
-            <th>Deposit</th>
-            <th>Commission (2%)</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody id="level1Table">
-          <!-- Populat din JS -->
-        </tbody>
-      </table>
+    <div>
+      <h2>Level 1 Referrals</h2>
+      <ul id="level1List"></ul>
     </div>
 
-    <div class="section">
-      <h2>Level 2 (Indirect Referrals)</h2>
-      <div id="level2Total" class="total"></div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Email</th>
-            <th>Deposit</th>
-            <th>Commission (1%)</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody id="level2Table">
-          <!-- Populat din JS -->
-        </tbody>
-      </table>
+    <div>
+      <h2>Level 2 Referrals</h2>
+      <ul id="level2List"></ul>
     </div>
+
+    <p><a href="dashboard.html">⬅ Back to Dashboard</a></p>
   </div>
 
-  <script>
-    const currentUser = localStorage.getItem("user_email");
-    const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-    const level1Table = document.getElementById("level1Table");
-    const level2Table = document.getElementById("level2Table");
-    const level1Total = document.getElementById("level1Total");
-    const level2Total = document.getElementById("level2Total");
-
-    let total1 = 0, total2 = 0;
-    let index1 = 1, index2 = 1;
-
-    // Level 1
-    const level1 = users.filter(u => u.ref === currentUser);
-    level1.forEach(user => {
-      const userDeposits = deposits.filter(d => d.user === user.email);
-      userDeposits.forEach(dep => {
-        const commission = dep.amount * 0.02;
-        total1 += commission;
-
-        level1Table.innerHTML += `
-          <tr>
-            <td>${index1++}</td>
-            <td>${user.email}</td>
-            <td>${dep.amount} USDT</td>
-            <td>${commission.toFixed(2)} USDT</td>
-            <td>${new Date(dep.date).toLocaleString()}</td>
-          </tr>`;
-      });
-    });
-
-    // Level 2
-    level1.forEach(l1User => {
-      const level2 = users.filter(u => u.ref === l1User.email);
-      level2.forEach(user => {
-        const userDeposits = deposits.filter(d => d.user === user.email);
-        userDeposits.forEach(dep => {
-          const commission = dep.amount * 0.01;
-          total2 += commission;
-
-          level2Table.innerHTML += `
-            <tr>
-              <td>${index2++}</td>
-              <td>${user.email}</td>
-              <td>${dep.amount} USDT</td>
-              <td>${commission.toFixed(2)} USDT</td>
-              <td>${new Date(dep.date).toLocaleString()}</td>
-            </tr>`;
-        });
-      });
-    });
-
-    level1Total.innerText = `Total Commissions from Level 1: ${total1.toFixed(2)} USDT`;
-    level2Total.innerText = `Total Commissions from Level 2: ${total2.toFixed(2)} USDT`;
-
-    function logout() {
-      localStorage.removeItem("user_email");
-      localStorage.removeItem("user_name");
-      location.href = "index.html";
-    }
-  </script>
+  <script src="team.js"></script>
 </body>
 </html>
