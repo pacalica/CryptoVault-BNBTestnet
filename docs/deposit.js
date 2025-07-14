@@ -1,43 +1,34 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const email = localStorage.getItem("userEmail");
-  const username = localStorage.getItem("userName");
+document.getElementById("depositForm").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-  if (!email || !username) {
-    window.location.href = "index.html";
-    return;
+  const amount = parseFloat(document.getElementById("amount").value);
+  const duration = document.getElementById("duration").value;
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user || !user.email) {
+    alert("You must be logged in.");
+    return window.location.href = "index.html";
   }
 
-  const amountInput = document.getElementById("amount");
-  const durationSelect = document.getElementById("duration");
-  const estimatedInterest = document.getElementById("estimatedInterest");
-  const totalReturn = document.getElementById("totalReturn");
-  const planInfo = document.getElementById("planInfo");
-
-  function updateEstimate() {
-    const amount = parseFloat(amountInput.value) || 0;
-    const duration = parseInt(durationSelect.value);
-
-    let rate = 0;
-    if (amount < 2000) {
-      rate = 3.5;
-      planInfo.innerText = "Plan 1: 3.5% / lună (0–1999 USDT)";
-    } else if (amount <= 5000) {
-      rate = 5.5;
-      planInfo.innerText = "Plan 2: 5.5% / lună (2000–5000 USDT)";
-    } else {
-      rate = 7.5;
-      planInfo.innerText = "Plan 3: 7.5% / lună (5001–10000 USDT)";
-    }
-
-    const interest = (amount * rate * duration) / 100;
-    const total = amount + interest;
-
-    estimatedInterest.innerText = interest.toFixed(2);
-    totalReturn.innerText = total.toFixed(2);
+  if (isNaN(amount) || amount <= 0) {
+    return alert("Please enter a valid amount.");
   }
 
-  amountInput.addEventListener("input", updateEstimate);
-  durationSelect.addEventListener("change", updateEstimate);
+  if (!duration) {
+    return alert("Please select a deposit duration.");
+  }
 
-  updateEstimate(); // Inițial
+  const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
+
+  deposits.push({
+    email: user.email,
+    amount: amount,
+    duration: parseInt(duration),
+    timestamp: new Date().toISOString(),
+    confirmed: false, // manually confirmed later by admin
+  });
+
+  localStorage.setItem("deposits", JSON.stringify(deposits));
+  alert("Deposit submitted. Waiting for manual confirmation.");
+  window.location.href = "dashboard.html";
 });
