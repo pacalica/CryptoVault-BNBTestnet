@@ -3,109 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard | Safe Crypto Vault</title>
+  <title>Safe Crypto Vault - Dashboard</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      font-family: 'Segoe UI', sans-serif;
-      background: url('robot2.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #00ffff;
-    }
-
-    .sidebar {
-      width: 240px;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 20px;
-      height: 100vh;
-      box-shadow: 2px 0 15px #0ff;
-    }
-
-    .sidebar h2 {
-      margin-bottom: 30px;
-      color: #00ffff;
-    }
-
-    .sidebar a {
-      display: block;
-      color: #fff;
-      text-decoration: none;
-      margin: 15px 0;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background: #00ffff;
-      color: #000;
-    }
-
-    .main {
-      flex-grow: 1;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.75);
-      min-height: 100vh;
-    }
-
-    .main h1 {
-      margin-top: 0;
-      color: #00ffff;
-    }
-
-    .info-box {
-      background: #111;
-      border: 1px solid #00ffff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 20px;
-      color: #0ff;
-    }
-
-    .label {
-      font-weight: bold;
-    }
-  </style>
 </head>
-<body>
+<body class="dashboard-page">
+
   <div class="sidebar">
-    <h2>Safe Vault</h2>
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="deposit.html">💰 Open Deposit</a>
-    <a href="withdraw.html">📤 Withdraw</a>
-    <a href="history.html">📜 History</a>
-    <a href="team.html">👥 My Team</a>
-    <a href="referral.html">🔗 Affiliate Link</a>
-    <a href="settings.html">⚙️ Settings</a>
-    <a href="security.html">🔒 Security</a>
-    <a href="#" onclick="logout()">🚪 Exit</a>
+    <h2>💎 Vault Menu</h2>
+    <ul>
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="open-deposit.html">Open Deposit</a></li>
+      <li><a href="deposits.html">Deposits</a></li>
+      <li><a href="withdraw.html">Withdraw</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="team.html">My Team</a></li>
+      <li><a href="affiliate.html">Affiliate Link</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="security.html">Security</a></li>
+      <li><a href="#" onclick="logout()">Exit</a></li>
+    </ul>
   </div>
 
-  <div class="main">
-    <h1>Welcome back, <span id="username">User</span> 👋</h1>
+  <div class="main-content">
+    <h1>Welcome, <span id="usernameDisplay">user</span> 👋</h1>
+    
+    <div class="card neon-card">
+      <h2>Total Invested</h2>
+      <p id="totalInvested">0 USDT</p>
+    </div>
 
-    <div class="info-box">
-      <div><span class="label">Email:</span> <span id="email">-</span></div>
-      <div><span class="label">Total Invested:</span> <span id="totalInvested">0 USDT</span></div>
+    <div class="card neon-card">
+      <h2>Estimated Interest</h2>
+      <p id="estimatedInterest">0 USDT</p>
+    </div>
+
+    <div class="card neon-card">
+      <h2>Status</h2>
+      <p id="vaultStatus">No active deposits</p>
     </div>
   </div>
 
   <script src="script.js"></script>
-  <script>
-    // Preia utilizatorul din localStorage
-    const username = localStorage.getItem("user_name");
-    const email = localStorage.getItem("user_email");
-    document.getElementById("username").textContent = username || "User";
-    document.getElementById("email").textContent = email || "-";
-
-    // Afișare sumă totală investită
-    const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
-    let total = 0;
-    deposits.forEach(d => total += parseFloat(d.amount || 0));
-    document.getElementById("totalInvested").textContent = total.toFixed(2) + " USDT";
-  </script>
 </body>
 </html>
