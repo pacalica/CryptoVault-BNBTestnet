@@ -46,17 +46,25 @@
       background: rgba(0, 0, 0, 0.6);
     }
 
-    .section h3 {
+    h3 {
       color: #00ffcc;
     }
 
-    .deposit-item {
-      background: rgba(0,0,0,0.7);
-      border: 1px solid #00ffaa;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #00ffaa66;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #444;
+    }
+
+    th {
+      color: #00ffaa;
     }
   </style>
 </head>
@@ -76,10 +84,22 @@
   </div>
 
   <div class="main-content">
-    <div class="section">
-      <h3>My Deposits</h3>
-      <div id="depositList"></div>
-    </div>
+    <h3>My Deposits</h3>
+    <table id="depositsTable">
+      <thead>
+        <tr>
+          <th>Amount (USDT)</th>
+          <th>Start Date</th>
+          <th>Duration</th>
+          <th>Plan</th>
+          <th>Interest</th>
+          <th>Maturity Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Injected by JS -->
+      </tbody>
+    </table>
   </div>
 
   <script>
@@ -88,24 +108,9 @@
       window.location.href = "index.html";
     }
 
-    function loadDeposits() {
-      const list = JSON.parse(localStorage.getItem("deposits") || "[]");
-      const container = document.getElementById("depositList");
-
-      if (list.length === 0) {
-        container.innerHTML = "<p>No deposits found.</p>";
-        return;
-      }
-
-      list.forEach(deposit => {
-        const div = document.createElement("div");
-        div.className = "deposit-item";
-        div.innerHTML = `
-          <p><strong>Amount:</strong> ${deposit.amount} USDT</p>
-          <p><strong>Date:</strong> ${deposit.date}</p>
-        `;
-        container.appendChild(div);
-      });
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
     }
 
     function copyReferral() {
@@ -115,12 +120,17 @@
       alert("Referral link copied!");
     }
 
-    function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
+    const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
+    const tableBody = document.querySelector("#depositsTable tbody");
 
-    loadDeposits();
-  </script>
-</body>
-</html>
+    if (deposits.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="6">No active deposits.</td></tr>`;
+    } else {
+      deposits.forEach(d => {
+        const startDate = new Date(d.date);
+        const maturityDate = new Date(startDate);
+        maturityDate.setMonth(startDate.getMonth() + parseInt(d.duration));
+
+        let interestRate = 0;
+        if (d.amount < 2000) interestRate = 3.5;
+        else if (d.amount <= 5000) interestRat
