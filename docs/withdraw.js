@@ -1,55 +1,41 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const deposits = JSON.parse(localStorage.getItem('deposits')) || [];
-  const withdrawals = JSON.parse(localStorage.getItem('withdrawals')) || [];
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("withdrawForm");
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  const withdrawForm = document.getElementById('withdrawForm');
-  const statusText = document.getElementById('withdrawStatus');
-
-  if (!user) {
+  if (!user || !user.email) {
+    alert("You must be logged in.");
     window.location.href = "index.html";
-  }
-
-  // Calculează soldul total activ
-  const totalBalance = deposits
-    .filter(dep => dep.userEmail === user.email && dep.status === 'confirmed')
-    .reduce((acc, dep) => {
-      const profit = dep.amount * (dep.interest / 100);
-      return acc + dep.amount + profit;
-    }, 0);
-
-  // Verifică dacă există o retragere în așteptare
-  const pendingWithdrawals = withdrawals.filter(w => w.userEmail === user.email && w.status === 'pending');
-  if (pendingWithdrawals.length > 0) {
-    withdrawForm.style.display = 'none';
-    statusText.textContent = "You already have a pending withdrawal.";
     return;
   }
 
-  withdrawForm.addEventListener('submit', function (e) {
+  const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
+  const pending = withdrawals.find(w => w.email === user.email && w.status === "pending");
+
+  if (pending) {
+    alert("You already have a pending withdrawal.");
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  form.addEventListener("submit", e => {
     e.preventDefault();
 
-    const amount = parseFloat(document.getElementById('withdrawAmount').value);
-    if (isNaN(amount) || amount <= 0) {
-      statusText.textContent = "Please enter a valid amount.";
-      return;
-    }
+    const amount = parseFloat(document.getElementById("withdrawAmount").value);
 
-    if (amount > totalBalance) {
-      statusText.textContent = "Insufficient balance for withdrawal.";
+    if (isNaN(amount) || amount <= 0) {
+      alert("Please enter a valid amount.");
       return;
     }
 
     withdrawals.push({
-      userEmail: user.email,
-      amount,
-      status: 'pending',
-      timestamp: Date.now()
+      email: user.email,
+      amount: amount,
+      status: "pending",
+      timestamp: new Date().toISOString()
     });
 
-    localStorage.setItem('withdrawals', JSON.stringify(withdrawals));
-    statusText.textContent = "Withdrawal request submitted.";
-    withdrawForm.reset();
-    withdrawForm.style.display = 'none';
+    localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+    alert("Withdrawal request submitted!");
+    window.location.href = "dashboard.html";
   });
 });
