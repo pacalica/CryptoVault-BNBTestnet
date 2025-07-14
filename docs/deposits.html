@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Deposits - Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('robot2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.85);
+      height: 100vh;
+      padding: 20px;
+      box-shadow: 0 0 20px #00ffcc;
+    }
+
+    .sidebar h2 {
+      color: #00ffcc;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      padding: 10px 0;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      color: #00ffcc;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .section h3 {
+      color: #00ffcc;
+    }
+
+    .deposit-item {
+      background: rgba(0,0,0,0.7);
+      border: 1px solid #00ffaa;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ffaa66;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Crypto Vault</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="deposit.html">Open Deposit</a>
+    <a href="#">Deposits</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="history.html">History</a>
+    <a href="team.html">My Team</a>
+    <a href="#" onclick="copyReferral()">Affiliate Link</a>
+    <a href="settings.html">Settings</a>
+    <a href="security.html">Security</a>
+    <a href="#" onclick="logout()">Exit</a>
+  </div>
+
+  <div class="main-content">
+    <div class="section">
+      <h3>My Deposits</h3>
+      <div id="depositList"></div>
+    </div>
+  </div>
+
+  <script>
+    const username = localStorage.getItem("username");
+    if (!username) {
+      window.location.href = "index.html";
+    }
+
+    function loadDeposits() {
+      const list = JSON.parse(localStorage.getItem("deposits") || "[]");
+      const container = document.getElementById("depositList");
+
+      if (list.length === 0) {
+        container.innerHTML = "<p>No deposits found.</p>";
+        return;
+      }
+
+      list.forEach(deposit => {
+        const div = document.createElement("div");
+        div.className = "deposit-item";
+        div.innerHTML = `
+          <p><strong>Amount:</strong> ${deposit.amount} USDT</p>
+          <p><strong>Date:</strong> ${deposit.date}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function copyReferral() {
+      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
+      const link = `${window.location.origin}/index.html?ref=${wallet}`;
+      navigator.clipboard.writeText(link);
+      alert("Referral link copied!");
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    loadDeposits();
+  </script>
+</body>
+</html>
