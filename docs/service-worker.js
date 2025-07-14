@@ -1,44 +1,47 @@
-const CACHE_NAME = "safe-crypto-vault-v1";
+const CACHE_NAME = 'safe-vault-cache-v1';
 const urlsToCache = [
-  "index.html",
-  "dashboard.html",
-  "style.css",
-  "script.js",
-  "manifest.json",
-  "bg-robot.jpg",
-  "icons/icon-192.png",
-  "icons/icon-512.png"
+  '/',
+  '/index.html',
+  '/dashboard.html',
+  '/deposit.html',
+  '/withdraw.html',
+  '/history.html',
+  '/admin.html',
+  '/style.css',
+  '/script.js',
+  '/deposit.js',
+  '/withdraw.js',
+  '/history.js',
+  '/robot2.jpg',
+  '/manifest.json'
 ];
 
-// Instalare service worker
-self.addEventListener("install", (event) => {
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
+    caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(urlsToCache);
     })
   );
 });
 
-// Activare service worker
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((names) => {
-      return Promise.all(
-        names.map((name) => {
-          if (name !== CACHE_NAME) {
-            return caches.delete(name);
-          }
-        })
-      );
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
     })
   );
 });
 
-// Interceptare cereri
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((resp) => {
-      return resp || fetch(event.request);
-    })
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames =>
+      Promise.all(
+        cacheNames.map(cache => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      )
+    )
   );
 });
