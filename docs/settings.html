@@ -3,162 +3,134 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Settings - Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Settings | Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="manifest.json"/>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
       background: url('robot2.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      display: flex;
+      color: #0ff;
     }
 
     .sidebar {
-      width: 250px;
-      background: rgba(0, 0, 0, 0.85);
-      height: 100vh;
+      width: 240px;
+      background: rgba(0, 0, 0, 0.9);
       padding: 20px;
-      box-shadow: 0 0 20px #00ffcc;
-    }
-
-    .sidebar h2 {
-      color: #00ffcc;
-      margin-bottom: 30px;
+      height: 100vh;
+      box-shadow: 2px 0 15px #0ff;
     }
 
     .sidebar a {
       display: block;
-      color: #ccc;
-      padding: 10px 0;
+      color: #fff;
       text-decoration: none;
-      transition: 0.2s;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      color: #00ffcc;
+      background: #00ffff;
+      color: #000;
     }
 
-    .main-content {
+    .main {
       flex-grow: 1;
       padding: 40px;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
-    h3 {
-      color: #00ffcc;
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-top: 20px;
-      color: #ccc;
+    h1 {
+      color: #00ffff;
+      margin-bottom: 30px;
     }
 
     input {
-      width: 300px;
-      padding: 10px;
+      padding: 12px;
+      font-size: 16px;
+      margin: 10px;
+      border: 1px solid #0ff;
       border-radius: 8px;
-      border: none;
-      margin-top: 5px;
+      background: #111;
+      color: #0ff;
+      width: 300px;
     }
 
     button {
-      margin-top: 30px;
-      padding: 12px 24px;
-      border: none;
-      background-color: #00ffaa;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
+      padding: 10px 25px;
+      font-size: 16px;
+      margin-top: 20px;
       border-radius: 8px;
+      background: #0ff;
+      color: #000;
+      border: none;
+      cursor: pointer;
     }
 
     button:hover {
-      background-color: #00ffcc;
+      background: #00cccc;
     }
 
     .success {
-      margin-top: 20px;
-      color: #00ffcc;
-      font-weight: bold;
+      margin-top: 15px;
+      color: #0f0;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>Crypto Vault</h2>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="deposit.html">Open Deposit</a>
-    <a href="deposits.html">Deposits</a>
-    <a href="withdraw.html">Withdraw</a>
-    <a href="history.html">History</a>
-    <a href="team.html">My Team</a>
-    <a href="#" onclick="copyReferral()">Affiliate Link</a>
-    <a href="#">Settings</a>
-    <a href="security.html">Security</a>
-    <a href="#" onclick="logout()">Exit</a>
+    <h2>Safe Vault</h2>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="deposit.html">💰 Open Deposit</a>
+    <a href="withdraw.html">📤 Withdraw</a>
+    <a href="history.html">📜 History</a>
+    <a href="team.html">👥 My Team</a>
+    <a href="referral.html">🔗 Affiliate Link</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="security.html">🔒 Security</a>
+    <a href="#" onclick="logout()">🚪 Exit</a>
   </div>
 
-  <div class="main-content">
-    <h3>Account Settings</h3>
-    <form id="settingsForm">
-      <label for="username">Username</label>
-      <input type="text" id="username" required />
-
-      <label for="email">Email</label>
-      <input type="email" id="email" required />
-
-      <button type="submit">Save Changes</button>
-      <div class="success" id="successMsg"></div>
-    </form>
+  <div class="main">
+    <h1>⚙️ Update Profile</h1>
+    <input type="text" id="username" placeholder="Your Name" />
+    <input type="email" id="email" placeholder="Your Email" />
+    <button onclick="updateSettings()">💾 Save</button>
+    <div class="success" id="msg" style="display:none;">✅ Saved successfully!</div>
   </div>
 
   <script>
-    const currentUser = localStorage.getItem("username");
-    if (!currentUser) window.location.href = "index.html";
+    const nameInput = document.getElementById("username");
+    const emailInput = document.getElementById("email");
 
-    const users = JSON.parse(localStorage.getItem("users") || "{}");
-    const currentData = users[currentUser];
+    window.onload = () => {
+      nameInput.value = localStorage.getItem("user_name") || "";
+      emailInput.value = localStorage.getItem("user_email") || "";
+    };
 
-    document.getElementById("username").value = currentUser;
-    document.getElementById("email").value = currentData.email || "";
-
-    document.getElementById("settingsForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const newUsername = document.getElementById("username").value.trim();
-      const newEmail = document.getElementById("email").value.trim();
-
-      if (!newUsername || !newEmail) return;
-
-      if (newUsername !== currentUser) {
-        if (users[newUsername]) {
-          alert("Username already exists.");
-          return;
-        }
-        users[newUsername] = { ...users[currentUser], email: newEmail };
-        delete users[currentUser];
-        localStorage.setItem("username", newUsername);
-      } else {
-        users[currentUser].email = newEmail;
-      }
-
-      localStorage.setItem("users", JSON.stringify(users));
-      document.getElementById("successMsg").innerText = "Changes saved successfully!";
-    });
-
-    function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
+    function updateSettings() {
+      localStorage.setItem("user_name", nameInput.value.trim());
+      localStorage.setItem("user_email", emailInput.value.trim());
+      document.getElementById("msg").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("msg").style.display = "none";
+      }, 2000);
     }
 
-    function copyReferral() {
-      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
-      const link = `${window.location.origin}/index.html?ref=${wallet}`;
-      navigator.clipboard.writeText(link);
-      alert("Referral link copied!");
+    function logout() {
+      localStorage.removeItem("user_email");
+      localStorage.removeItem("user_name");
+      location.href = "index.html";
     }
   </script>
 </body>
