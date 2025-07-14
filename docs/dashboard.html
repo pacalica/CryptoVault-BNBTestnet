@@ -3,56 +3,152 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Safe Crypto Vault – Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Dashboard - Safe Crypto Vault</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#00ffcc"/>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('robot2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.85);
+      height: 100vh;
+      padding: 20px;
+      box-shadow: 0 0 20px #00ffcc;
+    }
+
+    .sidebar h2 {
+      color: #00ffcc;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      padding: 10px 0;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      color: #00ffcc;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section h3 {
+      color: #00ffcc;
+      margin-bottom: 10px;
+    }
+
+    .info-box {
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00ffaa;
+    }
+
+    .logout-btn {
+      background: #ff4d4d;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .logout-btn:hover {
+      background: #e60000;
+    }
+  </style>
 </head>
 <body>
   <div class="sidebar">
-    <div class="logo">🛡 Safe Crypto Vault</div>
-    <ul>
-      <li class="active"><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="deposit.html">Open Deposit</a></li>
-      <li><a href="withdraw.html">Withdraw</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="myteam.html">My Team</a></li>
-      <li><a href="settings.html">Settings</a></li>
-      <li><a href="security.html">Security</a></li>
-      <li><a href="#" onclick="logout()">Exit</a></li>
-    </ul>
+    <h2>Crypto Vault</h2>
+    <a href="#">Dashboard</a>
+    <a href="deposit.html">Open Deposit</a>
+    <a href="deposits.html">Deposits</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="history.html">History</a>
+    <a href="team.html">My Team</a>
+    <a href="#" onclick="copyReferral()">Affiliate Link</a>
+    <a href="settings.html">Settings</a>
+    <a href="security.html">Security</a>
+    <a href="#" onclick="logout()">Exit</a>
   </div>
 
-  <div class="main">
-    <h1>Welcome, <span id="username"></span> 👋</h1>
-    <p>Your email: <span id="useremail"></span></p>
-
-    <div class="card-grid">
-      <div class="card">
-        <h3>Total Invested</h3>
-        <p id="totalInvested">0 USDT</p>
-      </div>
-      <div class="card">
-        <h3>Estimated Interest</h3>
-        <p id="interestEstimate">0 USDT</p>
-      </div>
-      <div class="card">
-        <h3>Referral Bonus</h3>
-        <p id="refBonus">0 USDT</p>
+  <div class="main-content">
+    <div class="section">
+      <h3>Welcome, <span id="username"></span></h3>
+      <div class="info-box">
+        <p><strong>Total Invested:</strong> <span id="totalInvested">0</span> USDT</p>
+        <p><strong>Estimated Interest:</strong> <span id="interest">0.00</span> USDT</p>
       </div>
     </div>
 
-    <div class="referral-box">
+    <div class="section">
       <h3>Your Referral Link</h3>
-      <input type="text" id="refLink" readonly />
-      <button onclick="copyReferral()">Copy Link</button>
+      <div class="info-box">
+        <p id="referralLink">Generating...</p>
+        <small>Invite friends and earn rewards from their deposits!</small>
+      </div>
     </div>
 
-    <div class="footer-note">
-      Note: All deposits are processed manually. Interest applies at the end of the selected period.
-    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    const username = localStorage.getItem("username");
+    const email = localStorage.getItem("email");
+    const totalInvested = localStorage.getItem("totalInvested") || "0";
+
+    if (!username || !email) {
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("username").innerText = username;
+    document.getElementById("totalInvested").innerText = totalInvested;
+
+    // Calculează dobânda estimată în funcție de plan
+    let interest = 0;
+    const amount = parseFloat(totalInvested);
+    if (amount >= 5000) interest = amount * 0.075;
+    else if (amount >= 2000) interest = amount * 0.055;
+    else if (amount > 0) interest = amount * 0.035;
+
+    document.getElementById("interest").innerText = interest.toFixed(2);
+
+    // Link referral
+    const wallet = "0x124377FCe14439248a4959ce528314aA3A897321"; // adresa fixă
+    const refLink = `${window.location.origin}${window.location.pathname.replace("dashboard.html", "index.html")}?ref=${wallet}`;
+    document.getElementById("referralLink").innerText = refLink;
+
+    function copyReferral() {
+      navigator.clipboard.writeText(refLink);
+      alert("Referral link copied!");
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
