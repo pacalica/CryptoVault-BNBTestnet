@@ -2,153 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Safe Crypto Vault</title>
-  <link rel="manifest" href="manifest.json" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Safe Crypto Vault</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
   <style>
     body {
       margin: 0;
+      display: flex;
       font-family: 'Segoe UI', sans-serif;
       background: url('robot2.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      display: flex;
+      color: #00ffff;
     }
 
     .sidebar {
-      width: 250px;
-      background: rgba(0, 0, 0, 0.85);
-      height: 100vh;
+      width: 240px;
+      background: rgba(0, 0, 0, 0.9);
       padding: 20px;
-      box-shadow: 0 0 20px #00ffcc;
+      height: 100vh;
+      box-shadow: 2px 0 15px #0ff;
     }
 
     .sidebar h2 {
-      color: #00ffcc;
       margin-bottom: 30px;
+      color: #00ffff;
     }
 
     .sidebar a {
       display: block;
-      color: #ccc;
-      padding: 10px 0;
+      color: #fff;
       text-decoration: none;
-      transition: 0.2s;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      color: #00ffcc;
+      background: #00ffff;
+      color: #000;
     }
 
-    .main-content {
+    .main {
       flex-grow: 1;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
     }
 
-    .section {
-      margin-bottom: 30px;
-    }
-
-    .section h3 {
-      color: #00ffcc;
-      margin-bottom: 10px;
+    .main h1 {
+      margin-top: 0;
+      color: #00ffff;
     }
 
     .info-box {
-      background: rgba(0,0,0,0.7);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #00ffaa;
-    }
-
-    .logout-btn {
-      background: #ff4d4d;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+      background: #111;
+      border: 1px solid #00ffff;
+      padding: 15px;
+      border-radius: 10px;
       margin-top: 20px;
+      color: #0ff;
     }
 
-    .logout-btn:hover {
-      background: #e60000;
+    .label {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>Crypto Vault</h2>
-    <a href="#">Dashboard</a>
-    <a href="deposit.html">Open Deposit</a>
-    <a href="deposits.html">Deposits</a>
-    <a href="withdraw.html">Withdraw</a>
-    <a href="history.html">History</a>
-    <a href="team.html">My Team</a>
-    <a href="#" onclick="copyReferral()">Affiliate Link</a>
-    <a href="settings.html">Settings</a>
-    <a href="security.html">Security</a>
-    <a href="#" onclick="logout()">Exit</a>
+    <h2>Safe Vault</h2>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="deposit.html">💰 Open Deposit</a>
+    <a href="withdraw.html">📤 Withdraw</a>
+    <a href="history.html">📜 History</a>
+    <a href="team.html">👥 My Team</a>
+    <a href="referral.html">🔗 Affiliate Link</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="security.html">🔒 Security</a>
+    <a href="#" onclick="logout()">🚪 Exit</a>
   </div>
 
-  <div class="main-content">
-    <div class="section">
-      <h3>Welcome, <span id="username"></span></h3>
-      <div class="info-box">
-        <p><strong>Total Invested:</strong> <span id="totalInvested">0</span> USDT</p>
-        <p><strong>Estimated Interest:</strong> <span id="interest">0.00</span> USDT</p>
-      </div>
-    </div>
+  <div class="main">
+    <h1>Welcome back, <span id="username">User</span> 👋</h1>
 
-    <div class="section">
-      <h3>Your Referral Link</h3>
-      <div class="info-box">
-        <p id="referralLink">Generating...</p>
-        <small>Invite friends and earn rewards from their deposits!</small>
-      </div>
+    <div class="info-box">
+      <div><span class="label">Email:</span> <span id="email">-</span></div>
+      <div><span class="label">Total Invested:</span> <span id="totalInvested">0 USDT</span></div>
     </div>
-
-    <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
 
+  <script src="script.js"></script>
   <script>
-    const username = localStorage.getItem("username");
-    const email = localStorage.getItem("email");
-    const totalInvested = localStorage.getItem("totalInvested") || "0";
+    // Preia utilizatorul din localStorage
+    const username = localStorage.getItem("user_name");
+    const email = localStorage.getItem("user_email");
+    document.getElementById("username").textContent = username || "User";
+    document.getElementById("email").textContent = email || "-";
 
-    if (!username || !email) {
-      window.location.href = "index.html";
-    }
-
-    document.getElementById("username").innerText = username;
-    document.getElementById("totalInvested").innerText = totalInvested;
-
-    // Calculează dobânda estimată în funcție de plan
-    let interest = 0;
-    const amount = parseFloat(totalInvested);
-    if (amount >= 5000) interest = amount * 0.075;
-    else if (amount >= 2000) interest = amount * 0.055;
-    else if (amount > 0) interest = amount * 0.035;
-
-    document.getElementById("interest").innerText = interest.toFixed(2);
-
-    // Link referral
-    const wallet = "0x124377FCe14439248a4959ce528314aA3A897321"; // adresa fixă
-    const refLink = `${window.location.origin}${window.location.pathname.replace("dashboard.html", "index.html")}?ref=${wallet}`;
-    document.getElementById("referralLink").innerText = refLink;
-
-    function copyReferral() {
-      navigator.clipboard.writeText(refLink);
-      alert("Referral link copied!");
-    }
-
-    function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
+    // Afișare sumă totală investită
+    const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
+    let total = 0;
+    deposits.forEach(d => total += parseFloat(d.amount || 0));
+    document.getElementById("totalInvested").textContent = total.toFixed(2) + " USDT";
   </script>
 </body>
 </html>
