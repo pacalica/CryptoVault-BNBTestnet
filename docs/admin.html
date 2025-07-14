@@ -3,212 +3,209 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin - Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Admin | Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css"/>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
       background: url('robot2.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      display: flex;
+      color: #0ff;
     }
 
     .sidebar {
-      width: 250px;
+      width: 240px;
       background: rgba(0, 0, 0, 0.9);
-      height: 100vh;
       padding: 20px;
-    }
-
-    .sidebar h2 {
-      color: #00ffff;
-      margin-bottom: 30px;
+      height: 100vh;
+      box-shadow: 2px 0 15px #0ff;
     }
 
     .sidebar a {
       display: block;
-      color: #ccc;
-      padding: 10px 0;
+      color: #fff;
       text-decoration: none;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      color: #00ffff;
+      background: #00ffff;
+      color: #000;
     }
 
-    .main-content {
+    .main {
       flex-grow: 1;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      background: rgba(0, 0, 0, 0.8);
       overflow-y: auto;
       height: 100vh;
     }
 
-    h3 {
+    h1 {
       color: #00ffff;
+      margin-bottom: 20px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-bottom: 40px;
     }
 
     th, td {
-      border: 1px solid #444;
+      border: 1px solid #0ff;
       padding: 10px;
       text-align: left;
     }
 
     th {
-      background-color: #111;
+      background: #111;
     }
 
-    .btn {
-      padding: 6px 12px;
-      background-color: #00ffff;
+    td {
+      background: rgba(0, 255, 255, 0.05);
+    }
+
+    button {
+      padding: 6px 10px;
+      background: #0ff;
       color: #000;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
-    .btn:hover {
-      background-color: #33ffff;
-    }
-
-    .danger {
-      background-color: #ff4444;
-    }
-
-    .danger:hover {
-      background-color: #ff6666;
-    }
-
-    .stats {
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-
-    .section {
-      margin-bottom: 50px;
+    button:hover {
+      background: #00cccc;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>Admin Panel</h2>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="deposit.html">Open Deposit</a>
-    <a href="withdraw.html">Withdraw</a>
-    <a href="history.html">History</a>
-    <a href="admin.html">Admin</a>
-    <a href="#" onclick="logout()">Exit</a>
+    <h2>Safe Vault</h2>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="deposit.html">💰 Open Deposit</a>
+    <a href="withdraw.html">📤 Withdraw</a>
+    <a href="history.html">📜 History</a>
+    <a href="team.html">👥 My Team</a>
+    <a href="referral.html">🔗 Affiliate Link</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <a href="security.html">🔒 Security</a>
+    <a href="admin.html">🛠 Admin</a>
+    <a href="#" onclick="logout()">🚪 Exit</a>
   </div>
 
-  <div class="main-content">
-    <h3>Safe Crypto Vault – Admin Control</h3>
+  <div class="main">
+    <h1>🛠 Admin Panel</h1>
 
-    <div class="section stats">
-      Total Investiții: <span id="totalInvest">0</span> USDT<br/>
-      Total Membri: <span id="totalUsers">0</span><br/>
-      Total Cereri retragere: <span id="totalWithdraws">0</span>
-    </div>
+    <h2>✅ Confirm Deposits</h2>
+    <table id="depositsTable">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Email</th>
+          <th>Amount (USDT)</th>
+          <th>TX Hash</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-    <div class="section">
-      <h3>Cereri de retragere</h3>
-      <table id="withdrawTable">
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Suma</th>
-            <th>Status</th>
-            <th>Acțiune</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <div class="section">
-      <h3>Utilizatori</h3>
-      <table id="userTable">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Investiție Totală</th>
-            <th>Referali (lvl 1 & 2)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <h2>📤 Pending Withdrawals</h2>
+    <table id="withdrawalsTable">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Email</th>
+          <th>Amount (USDT)</th>
+          <th>Wallet</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <script>
-    const current = localStorage.getItem("username");
-    if (current !== "admin") {
-      alert("Acces restricționat.");
-      window.location.href = "index.html";
+    const depositsKey = 'deposits';
+    const withdrawalsKey = 'withdrawals';
+
+    function loadAdminData() {
+      const deposits = JSON.parse(localStorage.getItem(depositsKey) || '[]');
+      const withdrawals = JSON.parse(localStorage.getItem(withdrawalsKey) || '[]');
+
+      const depositsTable = document.querySelector('#depositsTable tbody');
+      depositsTable.innerHTML = '';
+
+      deposits.forEach((dep, i) => {
+        if (!dep.confirmed) {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${dep.user}</td>
+            <td>${dep.email}</td>
+            <td>${dep.amount}</td>
+            <td><a href="https://bscscan.com/tx/${dep.tx}" target="_blank">${dep.tx.slice(0,10)}...</a></td>
+            <td><button onclick="confirmDeposit(${i})">Confirm</button></td>
+          `;
+          depositsTable.appendChild(row);
+        }
+      });
+
+      const withdrawalsTable = document.querySelector('#withdrawalsTable tbody');
+      withdrawalsTable.innerHTML = '';
+
+      withdrawals.forEach((wd, i) => {
+        if (wd.status === 'pending') {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${wd.user}</td>
+            <td>${wd.email}</td>
+            <td>${wd.amount}</td>
+            <td>${wd.wallet}</td>
+            <td>
+              <button onclick="approveWithdrawal(${i})">✅ Approve</button>
+              <button onclick="rejectWithdrawal(${i})">❌ Reject</button>
+            </td>
+          `;
+          withdrawalsTable.appendChild(row);
+        }
+      });
     }
 
-    const users = JSON.parse(localStorage.getItem("users") || "{}");
-    const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
-    const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
-
-    document.getElementById("totalUsers").innerText = Object.keys(users).length;
-    document.getElementById("totalInvest").innerText = deposits.reduce((sum, d) => sum + Number(d.amount), 0);
-    document.getElementById("totalWithdraws").innerText = withdrawals.length;
-
-    const withdrawTable = document.querySelector("#withdrawTable tbody");
-    withdrawals.forEach((w, i) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${w.user}</td>
-        <td>${w.amount} USDT</td>
-        <td>${w.status}</td>
-        <td>
-          ${w.status === "pending"
-            ? `<button class="btn" onclick="updateStatus(${i}, 'approved')">Aprobă</button>
-               <button class="btn danger" onclick="updateStatus(${i}, 'rejected')">Respinge</button>`
-            : "-"
-          }
-        </td>
-      `;
-      withdrawTable.appendChild(tr);
-    });
-
-    function updateStatus(index, status) {
-      withdrawals[index].status = status;
-      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-      location.reload();
+    function confirmDeposit(index) {
+      const deposits = JSON.parse(localStorage.getItem(depositsKey) || '[]');
+      deposits[index].confirmed = true;
+      localStorage.setItem(depositsKey, JSON.stringify(deposits));
+      loadAdminData();
     }
 
-    const userTable = document.querySelector("#userTable tbody");
-    for (let user in users) {
-      const info = users[user];
-      const userDeposits = deposits.filter(d => d.user === user);
-      const total = userDeposits.reduce((sum, d) => sum + Number(d.amount), 0);
-      const team1 = Object.values(users).filter(u => u.referrer === user).length;
-      const team2 = Object.values(users).filter(u => u.referrer && users[u.referrer]?.referrer === user).length;
+    function approveWithdrawal(index) {
+      const withdrawals = JSON.parse(localStorage.getItem(withdrawalsKey) || '[]');
+      withdrawals[index].status = 'approved';
+      localStorage.setItem(withdrawalsKey, JSON.stringify(withdrawals));
+      loadAdminData();
+    }
 
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${user}</td>
-        <td>${info.email || "-"}</td>
-        <td>${total} USDT</td>
-        <td>${team1} / ${team2}</td>
-      `;
-      userTable.appendChild(tr);
+    function rejectWithdrawal(index) {
+      const withdrawals = JSON.parse(localStorage.getItem(withdrawalsKey) || '[]');
+      withdrawals[index].status = 'rejected';
+      localStorage.setItem(withdrawalsKey, JSON.stringify(withdrawals));
+      loadAdminData();
     }
 
     function logout() {
-      localStorage.removeItem("username");
-      window.location.href = "index.html";
+      localStorage.removeItem('user_email');
+      localStorage.removeItem('user_name');
+      location.href = 'index.html';
     }
+
+    window.onload = loadAdminData;
   </script>
 </body>
 </html>
