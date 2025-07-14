@@ -48,44 +48,118 @@
 
     h3 {
       color: #00ffcc;
-    }
-
-    form {
-      max-width: 400px;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #00ffaa;
+      margin-bottom: 20px;
     }
 
     label {
       display: block;
-      margin-top: 15px;
+      margin-top: 20px;
       color: #ccc;
     }
 
     input {
-      width: 100%;
+      width: 300px;
       padding: 10px;
-      margin-top: 5px;
+      border-radius: 8px;
       border: none;
-      border-radius: 5px;
-      background: #222;
-      color: #fff;
+      margin-top: 5px;
     }
 
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #00ffaa;
-      color: #000;
+      margin-top: 30px;
+      padding: 12px 24px;
       border: none;
-      border-radius: 5px;
+      background-color: #00ffaa;
+      color: #000;
+      font-weight: bold;
       cursor: pointer;
+      border-radius: 8px;
     }
 
     button:hover {
-      background: #00ccaa;
+      background-color: #00ffcc;
     }
 
-    .me
+    .success {
+      margin-top: 20px;
+      color: #00ffcc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Crypto Vault</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="deposit.html">Open Deposit</a>
+    <a href="deposits.html">Deposits</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="history.html">History</a>
+    <a href="team.html">My Team</a>
+    <a href="#" onclick="copyReferral()">Affiliate Link</a>
+    <a href="#">Settings</a>
+    <a href="security.html">Security</a>
+    <a href="#" onclick="logout()">Exit</a>
+  </div>
+
+  <div class="main-content">
+    <h3>Account Settings</h3>
+    <form id="settingsForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required />
+
+      <button type="submit">Save Changes</button>
+      <div class="success" id="successMsg"></div>
+    </form>
+  </div>
+
+  <script>
+    const currentUser = localStorage.getItem("username");
+    if (!currentUser) window.location.href = "index.html";
+
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+    const currentData = users[currentUser];
+
+    document.getElementById("username").value = currentUser;
+    document.getElementById("email").value = currentData.email || "";
+
+    document.getElementById("settingsForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const newUsername = document.getElementById("username").value.trim();
+      const newEmail = document.getElementById("email").value.trim();
+
+      if (!newUsername || !newEmail) return;
+
+      if (newUsername !== currentUser) {
+        if (users[newUsername]) {
+          alert("Username already exists.");
+          return;
+        }
+        users[newUsername] = { ...users[currentUser], email: newEmail };
+        delete users[currentUser];
+        localStorage.setItem("username", newUsername);
+      } else {
+        users[currentUser].email = newEmail;
+      }
+
+      localStorage.setItem("users", JSON.stringify(users));
+      document.getElementById("successMsg").innerText = "Changes saved successfully!";
+    });
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    function copyReferral() {
+      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
+      const link = `${window.location.origin}/index.html?ref=${wallet}`;
+      navigator.clipboard.writeText(link);
+      alert("Referral link copied!");
+    }
+  </script>
+</body>
+</html>
