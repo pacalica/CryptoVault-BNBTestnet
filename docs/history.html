@@ -3,152 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Withdrawal History | Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="manifest" href="manifest.json"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      background: url('robot2.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #0ff;
-    }
-
-    .sidebar {
-      width: 240px;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 20px;
-      height: 100vh;
-      box-shadow: 2px 0 15px #0ff;
-    }
-
-    .sidebar a {
-      display: block;
-      color: #fff;
-      text-decoration: none;
-      margin: 15px 0;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background: #00ffff;
-      color: #000;
-    }
-
-    .main {
-      flex-grow: 1;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.75);
-      min-height: 100vh;
-    }
-
-    h1 {
-      color: #00ffff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #000;
-      color: #0ff;
-    }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #0ff;
-      text-align: center;
-    }
-
-    th {
-      background: #111;
-    }
-
-    .pending {
-      color: orange;
-    }
-
-    .approved {
-      color: lime;
-    }
-
-    .rejected {
-      color: red;
-    }
-
-    .info {
-      margin-bottom: 15px;
-      color: #0ff;
-    }
-  </style>
+  <title>History - Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="sidebar">
-    <h2>Safe Vault</h2>
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="deposit.html">💰 Open Deposit</a>
-    <a href="withdraw.html">📤 Withdraw</a>
-    <a href="history.html">📜 History</a>
-    <a href="team.html">👥 My Team</a>
-    <a href="referral.html">🔗 Affiliate Link</a>
-    <a href="settings.html">⚙️ Settings</a>
-    <a href="security.html">🔒 Security</a>
-    <a href="#" onclick="logout()">🚪 Exit</a>
+<body class="bg-dark">
+  <div class="container">
+    <h1 class="neon-text">Transaction History</h1>
+
+    <div id="depositHistory">
+      <h2>Deposits</h2>
+      <ul id="depositList"></ul>
+    </div>
+
+    <div id="withdrawHistory">
+      <h2>Withdrawals</h2>
+      <ul id="withdrawList"></ul>
+    </div>
+
+    <p><a href="dashboard.html">⬅ Back to Dashboard</a></p>
   </div>
 
-  <div class="main">
-    <h1>Withdrawal History</h1>
-    <p class="info">Below is a list of your withdrawal requests.</p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Requested</th>
-          <th>After Fee</th>
-          <th>Status</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody id="historyTable">
-        <!-- Rows added by JS -->
-      </tbody>
-    </table>
-  </div>
-
-  <script>
-    const user = localStorage.getItem("user_email");
-    const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
-    const table = document.getElementById("historyTable");
-
-    const userWithdrawals = withdrawals.filter(w => w.user === user);
-
-    if (userWithdrawals.length === 0) {
-      table.innerHTML = '<tr><td colspan="5">No withdrawals yet.</td></tr>';
-    } else {
-      userWithdrawals.reverse().forEach((w, index) => {
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${w.full} USDT</td>
-          <td>${w.amount} USDT</td>
-          <td class="${w.status}">${w.status.toUpperCase()}</td>
-          <td>${new Date(w.date).toLocaleString()}</td>
-        `;
-
-        table.appendChild(row);
-      });
-    }
-
-    function logout() {
-      localStorage.removeItem("user_email");
-      localStorage.removeItem("user_name");
-      location.href = "index.html";
-    }
-  </script>
+  <script src="history.js"></script>
 </body>
 </html>
