@@ -1,32 +1,36 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("loginForm");
+// login.js
 
-  // Dacă utilizatorul este deja logat, redirecționează automat
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
+document.addEventListener("DOMContentLoaded", function () {
+  const loginForm = document.getElementById("loginForm");
+  const emailInput = document.getElementById("email");
+  const usernameInput = document.getElementById("username");
+
+  // Autologin dacă datele sunt deja salvate
+  const savedEmail = localStorage.getItem("email");
+  const savedUsername = localStorage.getItem("username");
+
+  if (savedEmail && savedUsername) {
     window.location.href = "dashboard.html";
+    return;
   }
 
-  form.addEventListener("submit", function (e) {
+  // Când formularul este trimis
+  loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
-    const username = document.getElementById("username").value.trim();
+    const email = emailInput.value.trim();
+    const username = usernameInput.value.trim();
 
-    if (email && username) {
-      const user = {
-        email,
-        username,
-        balance: 0,
-        deposits: [],
-        withdrawals: [],
-        referrals: [],
-      };
-
-      localStorage.setItem("user", JSON.stringify(user));
-      window.location.href = "dashboard.html";
-    } else {
-      alert("Please enter both email and username.");
+    if (!email || !username) {
+      alert("Te rugăm să completezi emailul și numele de utilizator.");
+      return;
     }
+
+    // Salvăm datele în localStorage
+    localStorage.setItem("email", email);
+    localStorage.setItem("username", username);
+
+    // Redirecționează spre aplicație
+    window.location.href = "dashboard.html";
   });
 });
