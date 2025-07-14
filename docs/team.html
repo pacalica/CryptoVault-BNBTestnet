@@ -3,34 +3,170 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Team - CryptoVault</title>
+  <title>My Team - Safe Crypto Vault</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('robot2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.85);
+      height: 100vh;
+      padding: 20px;
+      box-shadow: 0 0 20px #00ffcc;
+    }
+
+    .sidebar h2 {
+      color: #00ffcc;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      padding: 10px 0;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      color: #00ffcc;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    h3 {
+      color: #00ffcc;
+    }
+
+    .level {
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    th {
+      color: #00ffaa;
+    }
+
+    .total {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #00ffaa;
+    }
+  </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>CryptoVault</h2>
-    <ul>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="deposit.html">Open Deposit</a></li>
-      <li><a href="withdraw.html">Withdraw</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="team.html" class="active">My Team</a></li>
-      <li><a href="settings.html">Settings</a></li>
-      <li><a href="index.html" onclick="logout()">Exit</a></li>
-    </ul>
+    <h2>Crypto Vault</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="deposit.html">Open Deposit</a>
+    <a href="deposits.html">Deposits</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="history.html">History</a>
+    <a href="#">My Team</a>
+    <a href="#" onclick="copyReferral()">Affiliate Link</a>
+    <a href="settings.html">Settings</a>
+    <a href="security.html">Security</a>
+    <a href="#" onclick="logout()">Exit</a>
   </div>
 
-  <div class="main">
-    <h1>My Referral Team</h1>
-    <p>This section will display your referral levels, earnings, and invited users.</p>
-    <p>Coming soon...</p>
+  <div class="main-content">
+    <h3>Referral Team</h3>
+
+    <div class="level">
+      <h4>Level 1 (Direct)</h4>
+      <table id="level1">
+        <thead>
+          <tr><th>Username</th><th>Amount Invested</th><th>Commission (2%)</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="level">
+      <h4>Level 2 (Indirect)</h4>
+      <table id="level2">
+        <thead>
+          <tr><th>Username</th><th>Amount Invested</th><th>Commission (1%)</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="total" id="totalCommission"></div>
   </div>
 
   <script>
-    function logout() {
-      localStorage.removeItem('user');
+    const currentUser = localStorage.getItem("username");
+    if (!currentUser) {
       window.location.href = "index.html";
     }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    function copyReferral() {
+      const wallet = "0x124377FCe14439248a4959ce528314aA3A897321";
+      const link = `${window.location.origin}/index.html?ref=${wallet}`;
+      navigator.clipboard.writeText(link);
+      alert("Referral link copied!");
+    }
+
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+    const level1Table = document.querySelector("#level1 tbody");
+    const level2Table = document.querySelector("#level2 tbody");
+
+    let totalCommission = 0;
+
+    for (let [username, data] of Object.entries(users)) {
+      if (data.ref === currentUser) {
+        const total = data.deposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
+        const commission = total * 0.02;
+        totalCommission += commission;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${username}</td><td>${total.toFixed(2)} USDT</td><td>${commission.toFixed(2)} USDT</td>`;
+        level1Table.appendChild(tr);
+
+        // Check for level 2 referrals
+        for (let [u2, d2] of Object.entries(users)) {
+          if (d2.ref === username) {
+            const total2 = d2.deposits?.reduce((s, d) => s + d.amount, 0) || 0;
+            const comm2 = total2 * 0.01;
+            totalCommission += comm2;
+
+            const tr2 = document.createElement("tr");
+            tr2.innerHTML = `<td>${u2}</td><td>${total2.toFixed(2)} USDT</td><td>${comm2.toFixed(2)} USDT</td>`;
+            level2Table.appendChild(tr2);
+          }
+        }
+      }
+    }
+
+    document.getElementById("totalCommission").innerText = `Total Earned from Referrals: ${totalCommission.toFixed(2)} USDT`;
   </script>
 </body>
 </html>
