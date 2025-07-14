@@ -2,20 +2,137 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CryptoVault - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Safe Crypto Vault</title>
+  <meta name="theme-color" content="#00ffcc"/>
+  <link rel="manifest" href="manifest.json"/>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="logo.svg" type="image/svg+xml" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(ellipse at center, #000 0%, #111 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .login-container {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #00ffcc;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 20px #00ffcc33;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+      color: #00ffcc;
+    }
+
+    .login-container p {
+      font-size: 0.9em;
+      color: #aaffaa;
+      margin-bottom: 30px;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: #00ffcc;
+      font-size: 1em;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .login-container input:focus {
+      background: #111;
+      border: 1px solid #00ffcc;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(45deg, #00ffcc, #66ff66);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-container button:hover {
+      background: linear-gradient(45deg, #00ffaa, #44ff44);
+    }
+
+    .logo {
+      margin-bottom: 20px;
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+
+    .powered {
+      font-size: 0.75em;
+      margin-top: 20px;
+      color: #888;
+    }
+  </style>
 </head>
-<body class="login-page">
+<body>
   <div class="login-container">
-    <h1>Welcome to CryptoVault</h1>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="text" id="username" placeholder="Username" required />
-      <button type="submit">Login</button>
-    </form>
+    <div class="logo">🚀 Safe Crypto Vault</div>
+    <h1>Welcome!</h1>
+    <p><em>Secure Your Crypto. Grow Your Wealth.</em></p>
+    <input type="email" id="email" placeholder="Your email" required />
+    <input type="text" id="username" placeholder="Username" required />
+    <button onclick="login()">Enter Vault</button>
+    <div class="powered">Powered by BNB Chain</div>
   </div>
 
-  <script src="login.js"></script>
+  <script>
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const username = document.getElementById("username").value.trim();
+
+      if (!email || !username) {
+        alert("Please fill in both fields.");
+        return;
+      }
+
+      localStorage.setItem("vault_email", email);
+      localStorage.setItem("vault_username", username);
+
+      // Detect referral from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get("ref");
+      if (ref) localStorage.setItem("vault_ref", ref);
+
+      window.location.href = "dashboard.html";
+    }
+
+    // Auto-login if already authenticated
+    window.onload = () => {
+      const email = localStorage.getItem("vault_email");
+      const username = localStorage.getItem("vault_username");
+      if (email && username) {
+        window.location.href = "dashboard.html";
+      }
+    };
+  </script>
 </body>
 </html>
