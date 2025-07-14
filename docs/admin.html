@@ -3,33 +3,212 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel - CryptoVault</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Admin - Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('robot2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.9);
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .sidebar h2 {
+      color: #00ffff;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      padding: 10px 0;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      color: #00ffff;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.7);
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    h3 {
+      color: #00ffff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #444;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #111;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      background-color: #00ffff;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #33ffff;
+    }
+
+    .danger {
+      background-color: #ff4444;
+    }
+
+    .danger:hover {
+      background-color: #ff6666;
+    }
+
+    .stats {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .section {
+      margin-bottom: 50px;
+    }
+  </style>
 </head>
-<body class="admin-body">
-  <div class="container admin-container">
-    <h1>Admin Panel</h1>
-
-    <!-- Section: Withdrawal Requests -->
-    <section>
-      <h2>Pending Withdrawal Requests</h2>
-      <div id="withdrawalsList" class="card-list"></div>
-    </section>
-
-    <!-- Section: Modify Balances -->
-    <section>
-      <h2>Modify User Balances</h2>
-      <form id="balanceForm" class="form-style">
-        <input type="text" id="balanceEmail" placeholder="User Email" required />
-        <input type="number" id="balanceAmount" placeholder="New Balance (USDT)" required />
-        <button type="submit">Update Balance</button>
-      </form>
-      <div id="balanceStatus" class="status-message"></div>
-    </section>
-
-    <a href="dashboard.html" class="btn-back">⬅ Back to Dashboard</a>
+<body>
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="deposit.html">Open Deposit</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="history.html">History</a>
+    <a href="admin.html">Admin</a>
+    <a href="#" onclick="logout()">Exit</a>
   </div>
 
-  <script src="admin.js"></script>
+  <div class="main-content">
+    <h3>Safe Crypto Vault – Admin Control</h3>
+
+    <div class="section stats">
+      Total Investiții: <span id="totalInvest">0</span> USDT<br/>
+      Total Membri: <span id="totalUsers">0</span><br/>
+      Total Cereri retragere: <span id="totalWithdraws">0</span>
+    </div>
+
+    <div class="section">
+      <h3>Cereri de retragere</h3>
+      <table id="withdrawTable">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Suma</th>
+            <th>Status</th>
+            <th>Acțiune</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Utilizatori</h3>
+      <table id="userTable">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Investiție Totală</th>
+            <th>Referali (lvl 1 & 2)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const current = localStorage.getItem("username");
+    if (current !== "admin") {
+      alert("Acces restricționat.");
+      window.location.href = "index.html";
+    }
+
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+    const deposits = JSON.parse(localStorage.getItem("deposits") || "[]");
+    const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
+
+    document.getElementById("totalUsers").innerText = Object.keys(users).length;
+    document.getElementById("totalInvest").innerText = deposits.reduce((sum, d) => sum + Number(d.amount), 0);
+    document.getElementById("totalWithdraws").innerText = withdrawals.length;
+
+    const withdrawTable = document.querySelector("#withdrawTable tbody");
+    withdrawals.forEach((w, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${w.user}</td>
+        <td>${w.amount} USDT</td>
+        <td>${w.status}</td>
+        <td>
+          ${w.status === "pending"
+            ? `<button class="btn" onclick="updateStatus(${i}, 'approved')">Aprobă</button>
+               <button class="btn danger" onclick="updateStatus(${i}, 'rejected')">Respinge</button>`
+            : "-"
+          }
+        </td>
+      `;
+      withdrawTable.appendChild(tr);
+    });
+
+    function updateStatus(index, status) {
+      withdrawals[index].status = status;
+      localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+      location.reload();
+    }
+
+    const userTable = document.querySelector("#userTable tbody");
+    for (let user in users) {
+      const info = users[user];
+      const userDeposits = deposits.filter(d => d.user === user);
+      const total = userDeposits.reduce((sum, d) => sum + Number(d.amount), 0);
+      const team1 = Object.values(users).filter(u => u.referrer === user).length;
+      const team2 = Object.values(users).filter(u => u.referrer && users[u.referrer]?.referrer === user).length;
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${user}</td>
+        <td>${info.email || "-"}</td>
+        <td>${total} USDT</td>
+        <td>${team1} / ${team2}</td>
+      `;
+      userTable.appendChild(tr);
+    }
+
+    function logout() {
+      localStorage.removeItem("username");
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
