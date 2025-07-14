@@ -1,42 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const email = localStorage.getItem("email") || "-";
-  const username = localStorage.getItem("username") || "-";
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) {
+    alert("You must be logged in.");
+    return window.location.href = "index.html";
+  }
 
-  document.getElementById("currentEmail").textContent = email;
-  document.getElementById("currentUsername").textContent = username;
+  const form = document.getElementById("passwordForm");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const current = document.getElementById("currentPassword").value;
+    const newPass = document.getElementById("newPassword").value;
+    const confirm = document.getElementById("confirmPassword").value;
+
+    if (!current || !newPass || !confirm) {
+      return alert("Please complete all fields.");
+    }
+
+    if (user.password !== current) {
+      return alert("Current password is incorrect.");
+    }
+
+    if (newPass !== confirm) {
+      return alert("New passwords do not match.");
+    }
+
+    user.password = newPass;
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // Update in global users list
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const updatedUsers = users.map(u =>
+      u.wallet === user.wallet ? { ...u, password: newPass } : u
+    );
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+    alert("Password updated successfully.");
+    window.location.href = "dashboard.html";
+  });
 });
-
-function resetEmail() {
-  const newEmail = document.getElementById("newEmail").value.trim();
-  if (newEmail && newEmail.includes("@")) {
-    localStorage.setItem("email", newEmail);
-    alert("Email updated!");
-    document.getElementById("currentEmail").textContent = newEmail;
-    document.getElementById("newEmail").value = "";
-  } else {
-    alert("Please enter a valid email.");
-  }
-}
-
-function resetUsername() {
-  const newUsername = document.getElementById("newUsername").value.trim();
-  if (newUsername.length >= 3) {
-    localStorage.setItem("username", newUsername);
-    alert("Username updated!");
-    document.getElementById("currentUsername").textContent = newUsername;
-    document.getElementById("newUsername").value = "";
-  } else {
-    alert("Username must be at least 3 characters.");
-  }
-}
-
-function resetAll() {
-  if (confirm("Are you sure you want to log out and clear all data?")) {
-    localStorage.clear();
-    window.location.href = "index.html";
-  }
-}
-
-function logout() {
-  localStorage.clear();
-}
