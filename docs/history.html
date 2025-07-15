@@ -3,24 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>History - Safe Crypto Vault</title>
+  <title>History | Safe Crypto Vault</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-dark">
+<body class="dashboard-body">
   <div class="container">
-    <h1 class="neon-text">Transaction History</h1>
+    <h1>📜 Withdrawal History</h1>
 
-    <div id="depositHistory">
-      <h2>Deposits</h2>
-      <ul id="depositList"></ul>
+    <div id="historySection">
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th>Amount</th>
+            <th>Fee</th>
+            <th>Net</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <!-- rows added by JS -->
+        </tbody>
+      </table>
     </div>
 
-    <div id="withdrawHistory">
-      <h2>Withdrawals</h2>
-      <ul id="withdrawList"></ul>
-    </div>
-
-    <p><a href="dashboard.html">⬅ Back to Dashboard</a></p>
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
   </div>
 
   <script src="history.js"></script>
