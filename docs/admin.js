@@ -1,47 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+// admin.js
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CryptoVault | Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
+document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || user.email !== "admin@vault.app") {
+    alert("Access denied.");
+    window.location.href = "index.html";
+    return;
+  }
 
-<body>
-  <div class="container">
-    <h1>Welcome to CryptoVault</h1>
-    <p id="user-info"></p>
-    <div class="menu">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="deposit.html">Open Deposit</a>
-      <a href="deposits.html">Deposits</a>
-      <a href="withdraw.html">Withdraw</a>
-      <a href="history.html">History</a>
-      <a href="team.html">My Team</a>
-      <a href="affiliate.html">Affiliate Link</a>
-      <a href="settings.html">Settings</a>
-      <a href="security.html">Security</a>
-      <a href="#" onclick="logout()">Exit</a>
-    </div>
-  </div>
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const deposits = JSON.parse(localStorage.getItem("deposits")) || [];
+  const withdraws = JSON.parse(localStorage.getItem("withdraws")) || [];
 
-  <script>
-    window.onload = function () {
-      const email = localStorage.getItem("userEmail");
-      const name = localStorage.getItem("userName");
-      if (!email || !name) {
-        window.location.href = "index.html";
-      } else {
-        document.getElementById("user-info").innerText = `Logged in as: ${name} (${email})`;
-      }
-    };
+  const userList = document.getElementById("userList");
+  const totalDeposits = document.getElementById("totalDeposits");
+  const withdrawList = document.getElementById("withdrawList");
 
-    function logout() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
-  </script>
-</body>
+  // Afișăm utilizatorii
+  users.forEach(u => {
+    const li = document.createElement("li");
+    li.textContent = `${u.email || u.wallet} – ref: ${u.ref || "none"}`;
+    userList.appendChild(li);
+  });
 
-</html>
+  // Suma totală a depozitelor
+  const sum = deposits.reduce((acc, dep) => acc + parseFloat(dep.amount || 0), 0);
+  totalDeposits.textContent = `${sum.toFixed(2)} USDT`;
+
+  // Lista cereri retragere
+  if (withdraws.length === 0) {
+    withdrawList.innerHTML = "<li>No withdraw requests.</li>";
+  } else {
+    withdraws.forEach(w => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <strong>${w.email || w.wallet}</strong> – ${w.amount} USDT 
+        (<span class="${w.status}">${w.status}</span>)
+      `;
+      withdrawList.appendChild(li);
+    });
+  }
+});
