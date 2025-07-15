@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Withdraw - Safe Crypto Vault</title>
+  <title>Withdraw | Safe Crypto Vault</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-dark">
+<body class="dashboard-body">
   <div class="container">
-    <h1 class="neon-text">Request Withdrawal</h1>
+    <h1>📤 Request Withdrawal</h1>
 
-    <form id="withdrawForm">
-      <label>Amount to Withdraw (USDT):</label>
-      <input type="number" id="withdrawAmount" min="1" required />
+    <div id="withdrawSection">
+      <p class="info">You can request a withdrawal once per week. A 5% fee applies.</p>
 
-      <button type="submit" class="submit-btn">Submit Request</button>
-    </form>
+      <label for="withdrawAmount">Amount (USDT):</label>
+      <input type="number" id="withdrawAmount" placeholder="e.g. 500" />
 
-    <p><a href="dashboard.html">⬅ Back to Dashboard</a></p>
+      <button id="requestWithdraw">Request Withdrawal</button>
+      <p id="withdrawMessage" class="status-msg"></p>
+    </div>
+
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
   </div>
 
   <script src="withdraw.js"></script>
