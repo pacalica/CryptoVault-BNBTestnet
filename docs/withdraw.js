@@ -1,41 +1,47 @@
+// withdraw.js
+
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("withdrawForm");
+  const withdrawBtn = document.getElementById("requestWithdraw");
+  const withdrawMsg = document.getElementById("withdrawMessage");
+  const amountInput = document.getElementById("withdrawAmount");
+
   const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!user || !user.email) {
-    alert("You must be logged in.");
-    window.location.href = "index.html";
+  if (!user) {
+    withdrawMsg.textContent = "You must be logged in.";
+    withdrawBtn.disabled = true;
     return;
   }
 
-  const withdrawals = JSON.parse(localStorage.getItem("withdrawals") || "[]");
-  const pending = withdrawals.find(w => w.email === user.email && w.status === "pending");
+  const allRequests = JSON.parse(localStorage.getItem("withdrawals")) || [];
+  const userPending = allRequests.find(req => req.user === user.email && req.status === "pending");
 
-  if (pending) {
-    alert("You already have a pending withdrawal.");
-    window.location.href = "dashboard.html";
+  if (userPending) {
+    withdrawMsg.textContent = "You already have a pending withdrawal request.";
+    withdrawBtn.disabled = true;
     return;
   }
 
-  form.addEventListener("submit", e => {
-    e.preventDefault();
+  withdrawBtn.addEventListener("click", () => {
+    const amount = parseFloat(amountInput.value);
 
-    const amount = parseFloat(document.getElementById("withdrawAmount").value);
-
-    if (isNaN(amount) || amount <= 0) {
-      alert("Please enter a valid amount.");
+    if (!amount || amount <= 0) {
+      withdrawMsg.textContent = "Please enter a valid amount.";
       return;
     }
 
-    withdrawals.push({
-      email: user.email,
-      amount: amount,
-      status: "pending",
-      timestamp: new Date().toISOString()
-    });
+    const withdrawal = {
+      user: user.email,
+      amount,
+      fee: amount * 0.05,
+      net: amount * 0.95,
+      timestamp: Date.now(),
+      status: "pending"
+    };
 
-    localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-    alert("Withdrawal request submitted!");
-    window.location.href = "dashboard.html";
+    allRequests.push(withdrawal);
+    localStorage.setItem("withdrawals", JSON.stringify(allRequests));
+
+    withdrawMsg.textContent = `Withdrawal request submitted: ${withdrawal.net.toFixed(2)} USDT after 5% fee.`;
+    withdrawBtn.disabled = true;
   });
 });
