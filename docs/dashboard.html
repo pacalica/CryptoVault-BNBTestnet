@@ -2,48 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Safe Crypto Vault - Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Safe Crypto Vault – Dashboard</title>
   <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
 </head>
-<body class="dashboard-page">
+<body class="bg-black text-white min-h-screen">
 
-  <div class="sidebar">
-    <h2>💎 Vault Menu</h2>
-    <ul>
-      <li><a href="dashboard.html" class="active">Dashboard</a></li>
-      <li><a href="open-deposit.html">Open Deposit</a></li>
-      <li><a href="deposits.html">Deposits</a></li>
-      <li><a href="withdraw.html">Withdraw</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="team.html">My Team</a></li>
-      <li><a href="affiliate.html">Affiliate Link</a></li>
-      <li><a href="settings.html">Settings</a></li>
-      <li><a href="security.html">Security</a></li>
-      <li><a href="#" onclick="logout()">Exit</a></li>
-    </ul>
+  <!-- Background image -->
+  <div class="fixed inset-0 z-0 opacity-10">
+    <img src="robot2.jpg" alt="Background" class="w-full h-full object-cover"/>
   </div>
 
-  <div class="main-content">
-    <h1>Welcome, <span id="usernameDisplay">user</span> 👋</h1>
-    
-    <div class="card neon-card">
-      <h2>Total Invested</h2>
-      <p id="totalInvested">0 USDT</p>
-    </div>
+  <div class="relative z-10 flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gradient-to-b from-[#0ff] to-[#a0f] p-4 min-h-screen shadow-xl">
+      <h2 class="text-2xl font-bold mb-6">Safe Crypto Vault</h2>
+      <nav class="flex flex-col space-y-3 text-white font-semibold">
+        <a href="dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="open-deposit.html" class="hover:underline">Open Deposit</a>
+        <a href="deposits.html" class="hover:underline">Deposits</a>
+        <a href="withdraw.html" class="hover:underline">Withdraw</a>
+        <a href="history.html" class="hover:underline">History</a>
+        <a href="myteam.html" class="hover:underline">My Team</a>
+        <a href="affiliate.html" class="hover:underline">Affiliate Link</a>
+        <a href="settings.html" class="hover:underline">Settings</a>
+        <a href="security.html" class="hover:underline">Security</a>
+        <button id="logoutBtn" class="text-red-400 hover:underline text-left">Exit</button>
+      </nav>
+    </aside>
 
-    <div class="card neon-card">
-      <h2>Estimated Interest</h2>
-      <p id="estimatedInterest">0 USDT</p>
-    </div>
-
-    <div class="card neon-card">
-      <h2>Status</h2>
-      <p id="vaultStatus">No active deposits</p>
-    </div>
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+      <h1 class="text-3xl font-bold mb-6 text-cyan-300">Welcome to your Dashboard</h1>
+      <div id="dashboardContent" class="space-y-4">
+        <!-- Aici vor fi afișate datele utilizatorului -->
+        <p><strong>Email:</strong> <span id="userEmail"></span></p>
+        <p><strong>Username:</strong> <span id="userName"></span></p>
+        <p><strong>Total Invested:</strong> <span id="totalInvested">0 USDT</span></p>
+      </div>
+    </main>
   </div>
 
-  <script src="script.js"></script>
+  <script src="dashboard.js"></script>
+  <script>
+    // Logout direct din această pagină
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    });
+  </script>
 </body>
 </html>
