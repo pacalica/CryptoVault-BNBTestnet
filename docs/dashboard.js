@@ -1,17 +1,26 @@
-// docs/dashboard.js
+// dashboard.js
 
-document.addEventListener('DOMContentLoaded', () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  if (!user?.email || !user?.username) {
-    window.location.href = 'index.html';
+document.addEventListener("DOMContentLoaded", function () {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    // Dacă utilizatorul nu e logat, redirecționăm către login
+    window.location.href = "index.html";
     return;
   }
-  document.getElementById('username').textContent = user.username;
-  document.getElementById('user-email').textContent = user.email;
 
-  const totalDeposits = JSON.parse(localStorage.getItem('deposits') || '[]')
-    .filter(d => d.email === user.email)
-    .reduce((sum, d) => sum + parseFloat(d.amount), 0);
-  
-  document.getElementById('total-deposit').textContent = totalDeposits.toFixed(2) + ' USDT';
+  // Afișăm datele utilizatorului în dashboard
+  document.getElementById("userEmail").textContent = user.email || "N/A";
+  document.getElementById("userName").textContent = user.username || "N/A";
+
+  // Preluăm investiția totală din localStorage
+  const investments = JSON.parse(localStorage.getItem("investments")) || [];
+  let total = 0;
+
+  investments.forEach(item => {
+    if (!item.amount) return;
+    total += parseFloat(item.amount);
+  });
+
+  document.getElementById("totalInvested").textContent = `${total.toFixed(2)} USDT`;
 });
