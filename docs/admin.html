@@ -3,209 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin | Safe Crypto Vault</title>
-  <link rel="stylesheet" href="style.css"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      background: url('robot2.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #0ff;
-    }
-
-    .sidebar {
-      width: 240px;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 20px;
-      height: 100vh;
-      box-shadow: 2px 0 15px #0ff;
-    }
-
-    .sidebar a {
-      display: block;
-      color: #fff;
-      text-decoration: none;
-      margin: 15px 0;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background: #00ffff;
-      color: #000;
-    }
-
-    .main {
-      flex-grow: 1;
-      padding: 30px;
-      background: rgba(0, 0, 0, 0.8);
-      overflow-y: auto;
-      height: 100vh;
-    }
-
-    h1 {
-      color: #00ffff;
-      margin-bottom: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 40px;
-    }
-
-    th, td {
-      border: 1px solid #0ff;
-      padding: 10px;
-      text-align: left;
-    }
-
-    th {
-      background: #111;
-    }
-
-    td {
-      background: rgba(0, 255, 255, 0.05);
-    }
-
-    button {
-      padding: 6px 10px;
-      background: #0ff;
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #00cccc;
-    }
-  </style>
+  <title>Admin Panel | Safe Crypto Vault</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="sidebar">
-    <h2>Safe Vault</h2>
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="deposit.html">💰 Open Deposit</a>
-    <a href="withdraw.html">📤 Withdraw</a>
-    <a href="history.html">📜 History</a>
-    <a href="team.html">👥 My Team</a>
-    <a href="referral.html">🔗 Affiliate Link</a>
-    <a href="settings.html">⚙️ Settings</a>
-    <a href="security.html">🔒 Security</a>
-    <a href="admin.html">🛠 Admin</a>
-    <a href="#" onclick="logout()">🚪 Exit</a>
+<body class="dashboard-body">
+  <div class="container">
+    <h1>🛡️ Admin Panel</h1>
+
+    <section class="admin-section">
+      <h2>Registered Users</h2>
+      <ul id="userList" class="admin-list"></ul>
+    </section>
+
+    <section class="admin-section">
+      <h2>Total Deposits</h2>
+      <p id="totalDeposits">Loading...</p>
+    </section>
+
+    <section class="admin-section">
+      <h2>Withdraw Requests</h2>
+      <ul id="withdrawList" class="admin-list"></ul>
+    </section>
+
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
   </div>
 
-  <div class="main">
-    <h1>🛠 Admin Panel</h1>
-
-    <h2>✅ Confirm Deposits</h2>
-    <table id="depositsTable">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Email</th>
-          <th>Amount (USDT)</th>
-          <th>TX Hash</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <h2>📤 Pending Withdrawals</h2>
-    <table id="withdrawalsTable">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Email</th>
-          <th>Amount (USDT)</th>
-          <th>Wallet</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <script>
-    const depositsKey = 'deposits';
-    const withdrawalsKey = 'withdrawals';
-
-    function loadAdminData() {
-      const deposits = JSON.parse(localStorage.getItem(depositsKey) || '[]');
-      const withdrawals = JSON.parse(localStorage.getItem(withdrawalsKey) || '[]');
-
-      const depositsTable = document.querySelector('#depositsTable tbody');
-      depositsTable.innerHTML = '';
-
-      deposits.forEach((dep, i) => {
-        if (!dep.confirmed) {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${dep.user}</td>
-            <td>${dep.email}</td>
-            <td>${dep.amount}</td>
-            <td><a href="https://bscscan.com/tx/${dep.tx}" target="_blank">${dep.tx.slice(0,10)}...</a></td>
-            <td><button onclick="confirmDeposit(${i})">Confirm</button></td>
-          `;
-          depositsTable.appendChild(row);
-        }
-      });
-
-      const withdrawalsTable = document.querySelector('#withdrawalsTable tbody');
-      withdrawalsTable.innerHTML = '';
-
-      withdrawals.forEach((wd, i) => {
-        if (wd.status === 'pending') {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${wd.user}</td>
-            <td>${wd.email}</td>
-            <td>${wd.amount}</td>
-            <td>${wd.wallet}</td>
-            <td>
-              <button onclick="approveWithdrawal(${i})">✅ Approve</button>
-              <button onclick="rejectWithdrawal(${i})">❌ Reject</button>
-            </td>
-          `;
-          withdrawalsTable.appendChild(row);
-        }
-      });
-    }
-
-    function confirmDeposit(index) {
-      const deposits = JSON.parse(localStorage.getItem(depositsKey) || '[]');
-      deposits[index].confirmed = true;
-      localStorage.setItem(depositsKey, JSON.stringify(deposits));
-      loadAdminData();
-    }
-
-    function approveWithdrawal(index) {
-      const withdrawals = JSON.parse(localStorage.getItem(withdrawalsKey) || '[]');
-      withdrawals[index].status = 'approved';
-      localStorage.setItem(withdrawalsKey, JSON.stringify(withdrawals));
-      loadAdminData();
-    }
-
-    function rejectWithdrawal(index) {
-      const withdrawals = JSON.parse(localStorage.getItem(withdrawalsKey) || '[]');
-      withdrawals[index].status = 'rejected';
-      localStorage.setItem(withdrawalsKey, JSON.stringify(withdrawals));
-      loadAdminData();
-    }
-
-    function logout() {
-      localStorage.removeItem('user_email');
-      localStorage.removeItem('user_name');
-      location.href = 'index.html';
-    }
-
-    window.onload = loadAdminData;
-  </script>
+  <script src="admin.js"></script>
 </body>
 </html>
